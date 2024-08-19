@@ -1,0 +1,245 @@
+<resources>
+  <string name="app_name" translatable="false">OGN AR Viewer</string>
+  <string name="app_short_name" translatable="false">OGN AR</string>
+  <string name="app_version">Version %s</string>
+  <string name="app_license">License GPLv3+</string>
+
+  <string name="home">Home</string>
+  <string name="menu_search">Search</string>
+  <string name="menu_import">Import</string>
+  <string name="menu_export">Export</string>
+  <string name="menu_delete">Delete</string>
+  <string name="menu_delete_all">Delete all</string>
+
+  <string name="action_save">Save</string>
+  <string name="action_adjust">Adjust</string>
+
+  <string name="ground_speed">Ground speed</string>
+  <string name="ground_speed_format_kmh">%d km/h</string>
+  <string name="ground_speed_format_kt">%d kt</string>
+  <string name="ground_speed_format_mph">%d mph</string>
+  <string name="altitude">Altitude (MSL / above you)</string>
+  <string name="altitude_format_meters">%1$d m / %2$d m</string>
+  <string name="altitude_format_feet">%1$d ft / %2$d ft</string>
+  <string name="climb_rate">Climb rate</string>
+  <string name="climb_rate_format_metric">%+.1f m/s</string>
+  <string name="climb_rate_format_imperial">%+d ft/min</string>
+  <string name="track">Track</string>
+  <string name="model">Model</string>
+  <string name="owner">Owner</string>
+  <string name="competition_number">Competition number</string>
+  <string name="base_airfield">Base airfield</string>
+  <string name="receiver">Receiver</string>
+  <string name="version">Version</string>
+  <string name="ntp_offset">NTP offset</string>
+  <string name="ntp_offset_format">%.1f ms</string>
+  <string name="free_ram">Free RAM</string>
+  <string name="total_ram">Total RAM</string>
+  <string name="ram_format">%d MB</string>
+  <string name="cpu_temperature">CPU temperature</string>
+  <string name="cpu_temperature_format">%.1f ℃</string>
+  <string name="cpu_load">CPU load</string>
+  <string name="cpu_load_format">%d %%</string>
+  <string name="not_available">N/A</string>
+  <string-array name="aircraft_types">
+    <item>Unknown</item>
+    <item>Glider</item>
+    <item>Tow plane</item>
+    <item>Helicopter</item>
+    <item>Parachute</item>
+    <item>Drop plane</item>
+    <item>Hang glider</item>
+    <item>Para glider</item>
+    <item>Powered aircraft</item>
+    <item>Jet aircraft</item>
+    <item>UFO</item>
+    <item>Balloon</item>
+    <item>Airship</item>
+    <item>UAV</item>
+    <item>Unknown</item>
+    <item>Static object</item>
+  </string-array>
+  <string-array name="aircraft_track">
+    <item>N</item>
+    <item>NE</item>
+    <item>E</item>
+    <item>SE</item>
+    <item>S</item>
+    <item>SW</item>
+    <item>W</item>
+    <item>NW</item>
+    <item>N</item>
+  </string-array>
+
+  <string name="address">Address</string>
+  <string name="registration_number">Registration number</string>
+
+  <plurals name="delete_count">
+    <item quantity="one">Delete %d item?</item>
+    <item quantity="other">Delete %d items?</item>
+  </plurals>
+  <string name="delete_message">This action cannot be undone.</string>
+  <string name="delete_cancel">Cancel</string>
+  <string name="delete_delete">Delete</string>
+
+  <string name="exported">Exported successfully</string>
+
+  <string name="calibration_title">Low compass accuracy</string>
+  <string name="calibration_description">Rotate your device like shown above 2–3 times to calibrate the compass. Make sure it is rotated along all <b>three</b> axes.</string>
+  <string name="waiting_gps_title">Waiting for GPS</string>
+  <string name="waiting_gps_description">OGN AR Viewer needs to know your exact location to show aircraft around you.</string>
+  <plurals name="waiting_gps_satellites">
+    <item quantity="one">%d satellite found, %d used</item>
+    <item quantity="other">%d satellites found, %d used</item>
+  </plurals>
+  <string name="waiting_gps_accuracy">Current accuracy: %1$d m / %2$d m</string>
+
+  <string name="beware_title">Warning</string>
+  <string name="beware_message">Beware of physical hazards in the real world.\n\nSome aircraft may be missing or shown at a wrong position.\n\nDon\'t use for navigation purposes.</string>
+  <string name="beware_checkbox">Don\'t show next time</string>
+
+  <string name="delete_all_title">Delete all entries?</string>
+  <string name="delete_all_message">This action cannot be undone. Consider exporting the directory first as a backup.</string>
+  <string name="delete_all_cancel">Cancel</string>
+  <string name="delete_all_delete">Delete</string>
+
+  <string name="saved">Saved</string>
+
+  <string name="disconnected">Disconnected</string>
+  <string name="connection_failed">Connection to OGN failed.</string>
+  <string name="exit">Exit</string>
+  <string name="retry">Retry</string>
+  <string name="button_continue">Continue</string>
+
+  <string name="bad_accuracy">Bad GPS accuracy</string>
+  <string name="waiting_gps">Waiting for GPS…</string>
+  <string name="gps_disabled">GPS disabled</string>
+  <string name="enable_gps">You need to enable GPS. Press \"Continue\" to go to the system settings.</string>
+
+  <string name="content_description_logo">Logo</string>
+  <string name="content_description_indicator">Target indicator</string>
+  <string name="content_description_directory">Aircraft list</string>
+
+  <string name="prefs_show_aircraft">Show aircraft</string>
+  <string name="prefs_show_aircraft_without_motion">Show aircraft with zero speed</string>
+  <string name="prefs_show_receivers">Show receivers</string>
+  <string name="prefs_show_receivers_hint">Note: it takes up to 5 minutes until all receivers are shown.</string>
+  <string name="prefs_show_compass">Show compass</string>
+  <string name="prefs_demo_mode">Demo mode</string>
+  <string name="prefs_demo_mode_hint">Show fake aircraft without connecting to the OGN. Primarily designed for Google Play reviewers and indoor testing.</string>
+  <string name="prefs_max_distance">Max distance (km)</string>
+  <string name="prefs_linear_interpolation">Linear interpolation</string>
+  <string name="prefs_linear_interpolation_hint">Predict aircraft location between beacons.</string>
+  <string name="prefs_compass_declination">Compass declination</string>
+  <string name="prefs_keep_screen_on">Keep screen on</string>
+  <string name="prefs_beware_on_start">Show disclaimer</string>
+  <string name="show_fps">Show FPS</string>
+  <string name="prefs_debug">Debugging information</string>
+
+  <string name="permission_denied_twice">You have denied a permission twice</string>
+  <string name="permission_denied_twice_message">Now you need to go the settings and fix permissions there!</string>
+  <string name="no_permission_camera">Camera access: required for AR</string>
+  <string name="no_permission_location">Fine location: required for AR. Obfuscated when send to OGN servers.</string>
+  <string name="no_permission_footer">Tap \"Continue\" and select \"Allow\" in the next dialog.</string>
+  <string name="no_permission_title">The following permissions are missing</string>
+
+  <string-array name="compass_signs">
+    <item>N</item>
+    <item>S</item>
+    <item>E</item>
+    <item>W</item>
+  </string-array>
+
+  <string name="ognddb_attribution">This app comes with the OGN DDB freely available at ddb.glidernet.org under the ODC-BY license. Access time: %s.</string>
+
+  <string name="demo_mode_active">Demo mode active</string>
+
+  <string name="parse_error">Parse error</string>
+
+  <string name="manual_adjustment">Manually adjust the compass up to ±10° by touching the screen and moving the finger in the desired direction.</string>
+  <string name="done">Done</string>
+  <string name="reset">Reset</string>
+
+  <string name="crash">The app has crashed :-( Please email the backtrace to the author using the button in the top-right corner.</string>
+  <string name="email_backtrace">Email backtrace</string>
+
+  <string name="close_without_saving">Close without saving?</string>
+  <string name="close">Close</string>
+
+  <string name="units">Units</string>
+  <string name="speed">Speed</string>
+  <string name="distance">Distance</string>
+  <string name="altitude2">Altitude</string>
+
+  <string name="distance_m">%d m</string>
+  <string name="distance_km">%.1f km</string>
+  <string name="distance_nm">%.1f NM</string>
+  <string name="distance_mi">%.1f mi</string>
+
+  <string-array name="speed_units" translatable="false">
+    <item>kmh</item>
+    <item>knots</item>
+    <item>mph</item>
+  </string-array>
+  <string-array name="speed_units_text">
+    <item>Kilometers per hour (km/h)</item>
+    <item>Knots (kt)</item>
+    <item>Miles per hour (mph)</item>
+  </string-array>
+
+  <string-array name="distance_units" translatable="false">
+    <item>km</item>
+    <item>nm</item>
+    <item>mi</item>
+  </string-array>
+  <string-array name="distance_units_text">
+    <item>Kilometers (km)</item>
+    <item>Nautical miles (NM)</item>
+    <item>Miles (mi)</item>
+  </string-array>
+
+  <string-array name="altitude_units" translatable="false">
+    <item>meters</item>
+    <item>feet</item>
+  </string-array>
+  <string-array name="altitude_units_text">
+    <item>Meters (m)</item>
+    <item>Feet (ft)</item>
+  </string-array>
+
+  <string-array name="climb_rate_units" translatable="false">
+    <item>meters_per_second</item>
+    <item>feet_per_minute</item>
+  </string-array>
+  <string-array name="climb_rate_units_text">
+    <item>Meters per second (m/s)</item>
+    <item>Feet per minute (ft/min)</item>
+  </string-array>
+
+  <string name="math_model">Math model</string>
+  <string name="other">Other</string>
+
+  <string name="current_accuracy">Current accuracy: %s.</string>
+  <string name="accuracy_low">low</string>
+  <string name="accuracy_medium">medium</string>
+  <string name="accuracy_high">high</string>
+  <string name="accuracy_unknown">unknown</string>
+  <string name="skip">Skip</string>
+
+  <string name="skip_calibration_title">Skip calibration?</string>
+  <string name="skip_calibration_text">Many people complained, this screen could not be bypassed. But each time I took their phone in my hands, calibration took a couple of seconds, meaning they just did it wrong.\n\nAlso, make sure you are standing away from big metal things, including cars.</string>
+  <string name="give_up">I\'m giving up</string>
+  <string name="let_me_try_again">Let me try again</string>
+
+  <string name="source_code">Source code</string>
+  <string name="bug_tracker">Bug tracker</string>
+
+  <string name="empty_directory">Your directory is empty</string>
+  <string name="directory_description">This is your personal aircraft directory similar to your personal phone book. To add a new entry, select an aircraft in the AR mode and tap the edit button.</string>
+
+  <string name="directory">Directory</string>
+  <string name="settings">Settings</string>
+  <string name="debug">Debug</string>
+  <string name="about">About</string>
+  <string name="edit">Edit</string>
+</resources>

@@ -1,0 +1,86 @@
+import me.testcase.ognarviewer.GenerateDdbTask;
+
+plugins {
+    alias(libs.plugins.androidApplication)
+    id "androidx.navigation.safeargs"
+    id "checkstyle"
+}
+
+android {
+    namespace "me.testcase.ognarviewer"
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "me.testcase.ognarviewer"
+        minSdk 26
+        targetSdk 34
+        versionCode 17
+        versionName "1.0.0"
+
+        resConfigs "en"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildFeatures {
+        viewBinding true
+        buildConfig true
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+            all {
+                // Otherwise the PrivateDirectoryTest fails.
+                // See https://github.com/robolectric/robolectric/issues/7456#issuecomment-2089850157
+                jvmArgs "--add-opens=java.base/java.io=ALL-UNNAMED"
+            }
+        }
+    }
+
+    applicationVariants.configureEach { variant ->
+        variant.registerGeneratedResFolders(project.files(generateDdbResource.outputDirectory).builtBy(generateDdbResource))
+    }
+}
+
+dependencies {
+    implementation libs.appcompat
+    implementation libs.constraintlayout
+    implementation libs.material
+    implementation libs.navigation.fragment
+    implementation libs.navigation.ui
+    implementation libs.preference
+    implementation libs.recyclerview
+    implementation libs.recyclerview.selection
+
+    debugImplementation libs.leakcanary
+
+    testImplementation libs.junit
+    testImplementation libs.robolectric
+}
+
+tasks.register("generateDdbResource", GenerateDdbTask)
+
+// The Checkstyle plugin doesn't work well with the Android plugin => register the task manually.
+tasks.register("checkstyle", Checkstyle) {
+    group "verification"
+    source "src/main/java"
+    classpath = files()
+}
+
+check.dependsOn("checkstyle")

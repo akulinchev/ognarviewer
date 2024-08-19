@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:fitsSystemWindows="true"
+  android:orientation="vertical"
+  tools:context=".ui.directory.EditFragment">
+
+  <com.google.android.material.appbar.AppBarLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fitsSystemWindows="true"
+    app:liftOnScroll="true">
+
+    <com.google.android.material.appbar.MaterialToolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:minHeight="?actionBarSize"
+      app:menu="@menu/fragment_edit"
+      tools:title="Edit" />
+
+  </com.google.android.material.appbar.AppBarLayout>
+
+  <com.google.android.material.textfield.TextInputLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginTop="16dp"
+    android:hint="@string/address">
+    <com.google.android.material.textfield.TextInputEditText
+      android:id="@+id/text_address"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:enabled="false" />
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <com.google.android.material.textfield.TextInputLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginTop="16dp"
+    android:hint="@string/registration_number">
+    <com.google.android.material.textfield.TextInputEditText
+      android:id="@+id/text_registration_number"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:inputType="textVisiblePassword" />
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <com.google.android.material.textfield.TextInputLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginTop="16dp"
+    android:hint="@string/competition_number">
+    <com.google.android.material.textfield.TextInputEditText
+      android:id="@+id/competition_number"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:inputType="text" />
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <com.google.android.material.textfield.TextInputLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginTop="16dp"
+    android:hint="@string/model">
+    <com.google.android.material.textfield.TextInputEditText
+      android:id="@+id/model"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:inputType="text" />
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <com.google.android.material.textfield.TextInputLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginTop="16dp"
+    android:hint="@string/owner">
+    <com.google.android.material.textfield.TextInputEditText
+      android:id="@+id/owner"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:inputType="text" />
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <com.google.android.material.textfield.TextInputLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="16dp"
+    android:hint="@string/base_airfield">
+    <com.google.android.material.textfield.TextInputEditText
+      android:id="@+id/text_home_base"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:inputType="text" />
+  </com.google.android.material.textfield.TextInputLayout>
+
+</LinearLayout>

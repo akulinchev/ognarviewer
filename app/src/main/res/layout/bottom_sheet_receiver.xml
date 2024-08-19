@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:clickable="true"
+  android:orientation="vertical"
+  tools:context=".ui.home.HomeFragment">
+
+  <GridLayout
+    android:id="@+id/backdrop"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bottom_sheet_background"
+    android:columnCount="2"
+    android:padding="16dp"
+    tools:backgroundTint="#4CAF50">
+
+    <TextView
+      android:id="@+id/displayNameTextView"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnSpan="2"
+      android:layout_columnWeight="1"
+      android:textAppearance="?textAppearanceHeadline6"
+      android:textColor="?colorOnPrimary"
+      tools:text="EDRC" />
+
+    <TextView
+      android:id="@+id/text_receiver"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnSpan="2"
+      android:layout_columnWeight="1"
+      android:text="@string/receiver"
+      android:textAppearance="?textAppearanceBody2"
+      android:textColor="?android:textColorHintInverse" />
+
+  </GridLayout>
+
+  <GridLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:columnCount="2"
+    android:padding="16dp">
+
+    <TextView
+      android:id="@+id/text_version"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnWeight="1"
+      android:textAppearance="?textAppearanceBody1"
+      tools:text="v1.2.3.RPI-GPU" />
+
+    <TextView
+      android:id="@+id/text_ntp_offset"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnWeight="1"
+      android:textAppearance="?textAppearanceBody1"
+      tools:text="0.5 ms" />
+
+    <TextView
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnWeight="1"
+      android:text="@string/version"
+      android:textAppearance="?textAppearanceCaption"
+      android:textColor="?android:textColorSecondary" />
+
+    <TextView
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnWeight="1"
+      android:text="@string/ntp_offset"
+      android:textAppearance="?textAppearanceCaption"
+      android:textColor="?android:textColorSecondary" />
+
+    <TextView
+      android:id="@+id/text_free_ram"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnWeight="1"
+      android:layout_marginTop="16dp"
+      android:textAppearance="?textAppearanceBody1"
+      tools:text="200 MB" />
+
+    <TextView
+      android:id="@+id/text_total_ram"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnWeight="1"
+      android:layout_marginTop="16dp"
+      android:textAppearance="?textAppearanceBody1"
+      tools:text="4000 MB" />
+
+    <TextView
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnWeight="1"
+      android:text="@string/free_ram"
+      android:textAppearance="?textAppearanceCaption"
+      android:textColor="?android:textColorSecondary" />
+
+    <TextView
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnWeight="1"
+      android:text="@string/total_ram"
+      android:textAppearance="?textAppearanceCaption"
+      android:textColor="?android:textColorSecondary" />
+
+    <TextView
+      android:id="@+id/text_cpu_temp"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnWeight="1"
+      android:layout_marginTop="16dp"
+      android:textAppearance="?textAppearanceBody1"
+      tools:text="36.6 \u2103" />
+
+    <TextView
+      android:id="@+id/text_cpu_load"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnWeight="1"
+      android:layout_marginTop="16dp"
+      android:textAppearance="?textAppearanceBody1"
+      tools:text="70 %" />
+
+    <TextView
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnWeight="1"
+      android:text="@string/cpu_temperature"
+      android:textAppearance="?textAppearanceCaption"
+      android:textColor="?android:textColorSecondary" />
+
+    <TextView
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnWeight="1"
+      android:text="@string/cpu_load"
+      android:textAppearance="?textAppearanceCaption"
+      android:textColor="?android:textColorSecondary" />
+
+  </GridLayout>
+
+</LinearLayout>

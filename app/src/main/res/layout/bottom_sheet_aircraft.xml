@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:clickable="true"
+  android:orientation="vertical"
+  tools:context=".ui.home.HomeFragment">
+
+  <GridLayout
+    android:id="@+id/backdrop"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bottom_sheet_background"
+    android:columnCount="2"
+    android:padding="16dp"
+    tools:backgroundTint="#4CAF50">
+
+    <TextView
+      android:id="@+id/displayNameTextView"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnWeight="1"
+      android:textAppearance="?textAppearanceHeadline6"
+      android:textColor="?colorOnPrimary"
+      tools:text="D-1234" />
+
+    <ImageButton
+      android:id="@+id/button_edit"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_rowSpan="2"
+      android:layout_gravity="center"
+      android:background="@null"
+      android:contentDescription="@string/edit"
+      android:src="@drawable/ic_edit" />
+
+    <TextView
+      android:id="@+id/typeTextView"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnWeight="1"
+      android:textAppearance="?textAppearanceBody2"
+      tools:text="Glider"
+      tools:textColor="?android:textColorHintInverse" />
+
+  </GridLayout>
+
+  <GridLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:columnCount="2"
+    android:padding="16dp">
+
+    <TextView
+      android:id="@+id/groundSpeedTextView"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnWeight="1"
+      android:textAppearance="?textAppearanceBody1"
+      tools:text="200 km/h" />
+
+    <TextView
+      android:id="@+id/altitudeTextView"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnWeight="1"
+      android:textAppearance="?textAppearanceBody1"
+      tools:text="600 m / 200 m" />
+
+    <TextView
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnWeight="1"
+      android:text="@string/ground_speed"
+      android:textAppearance="?textAppearanceCaption"
+      android:textColor="?android:textColorSecondary" />
+
+    <TextView
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnWeight="1"
+      android:text="@string/altitude"
+      android:textAppearance="?textAppearanceCaption"
+      android:textColor="?android:textColorSecondary" />
+
+    <TextView
+      android:id="@+id/text_climb_rate"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnWeight="1"
+      android:layout_marginTop="16dp"
+      android:textAppearance="?textAppearanceBody1"
+      tools:text="+1 m/s" />
+
+    <TextView
+      android:id="@+id/text_track"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnWeight="1"
+      android:layout_marginTop="16dp"
+      android:textAppearance="?textAppearanceBody1"
+      tools:text="NW" />
+
+    <TextView
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnWeight="1"
+      android:text="@string/climb_rate"
+      android:textAppearance="?textAppearanceCaption"
+      android:textColor="?android:textColorSecondary" />
+
+    <TextView
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnWeight="1"
+      android:text="@string/track"
+      android:textAppearance="?textAppearanceCaption"
+      android:textColor="?android:textColorSecondary" />
+
+    <TextView
+      android:id="@+id/modelTextView"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnWeight="1"
+      android:layout_marginTop="16dp"
+      android:ellipsize="end"
+      android:maxLines="1"
+      android:textAppearance="?textAppearanceBody1"
+      tools:text="ASK-13" />
+
+    <TextView
+      android:id="@+id/ownerTextView"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnWeight="1"
+      android:layout_marginTop="16dp"
+      android:ellipsize="end"
+      android:maxLines="1"
+      android:textAppearance="?textAppearanceBody1"
+      tools:text="Akaflieg" />
+
+    <TextView
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnWeight="1"
+      android:text="@string/model"
+      android:textAppearance="?textAppearanceCaption"
+      android:textColor="?android:textColorSecondary" />
+
+    <TextView
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnWeight="1"
+      android:text="@string/owner"
+      android:textAppearance="?textAppearanceCaption"
+      android:textColor="?android:textColorSecondary" />
+
+    <TextView
+      android:id="@+id/text_cn"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnWeight="1"
+      android:layout_marginTop="16dp"
+      android:ellipsize="end"
+      android:maxLines="1"
+      android:textAppearance="?textAppearanceBody1"
+      tools:text="7L" />
+
+    <TextView
+      android:id="@+id/text_home"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnWeight="1"
+      android:layout_marginTop="16dp"
+      android:ellipsize="end"
+      android:maxLines="1"
+      android:textAppearance="?textAppearanceBody1"
+      tools:text="Marpingen" />
+
+    <TextView
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnWeight="1"
+      android:text="@string/competition_number"
+      android:textAppearance="?textAppearanceCaption"
+      android:textColor="?android:textColorSecondary" />
+
+    <TextView
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_columnWeight="1"
+      android:text="@string/base_airfield"
+      android:textAppearance="?textAppearanceCaption"
+      android:textColor="?android:textColorSecondary" />
+
+  </GridLayout>
+
+</LinearLayout>

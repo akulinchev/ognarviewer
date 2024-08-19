@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context=".ui.home.HomeFragment">
+
+  <me.testcase.ognarviewer.ui.home.WorldView
+    android:id="@+id/world_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+
+  <include
+    android:id="@+id/gps_waiting"
+    layout="@layout/overlay_gps" />
+
+  <include
+    android:id="@+id/auto_calibration"
+    layout="@layout/overlay_auto_calibration" />
+
+  <me.testcase.ognarviewer.ui.home.ManualCalibrationView
+    android:id="@+id/manual_calibration"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone" />
+
+  <com.google.android.material.appbar.AppBarLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#1A000000"
+    android:fitsSystemWindows="true">
+
+    <com.google.android.material.appbar.MaterialToolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:minHeight="?actionBarSize"
+      android:theme="@style/ThemeOverlay.Material3.Dark.ActionBar"
+      app:menu="@menu/fragment_home"
+      tools:title="OGN AR Viewer" />
+
+  </com.google.android.material.appbar.AppBarLayout>
+
+  <FrameLayout
+    android:id="@+id/bottom_sheet"
+    style="?bottomSheetStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:behavior_peekHeight="155dp"
+    app:layout_behavior="@string/bottom_sheet_behavior" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

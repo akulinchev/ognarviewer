@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <SwitchPreferenceCompat
+    app:defaultValue="true"
+    app:iconSpaceReserved="false"
+    app:key="show_aircraft"
+    app:title="@string/prefs_show_aircraft" />
+  <SwitchPreferenceCompat
+    android:dependency="show_aircraft"
+    app:defaultValue="true"
+    app:iconSpaceReserved="false"
+    app:key="show_aircraft_without_motion"
+    app:title="@string/prefs_show_aircraft_without_motion" />
+  <SwitchPreferenceCompat
+    app:defaultValue="true"
+    app:iconSpaceReserved="false"
+    app:key="show_receivers"
+    app:summary="@string/prefs_show_receivers_hint"
+    app:title="@string/prefs_show_receivers" />
+  <SwitchPreferenceCompat
+    app:defaultValue="true"
+    app:iconSpaceReserved="false"
+    app:key="show_compass"
+    app:title="@string/prefs_show_compass" />
+
+  <SeekBarPreference
+    android:max="30"
+    app:defaultValue="20"
+    app:iconSpaceReserved="false"
+    app:key="max_distance"
+    app:min="1"
+    app:showSeekBarValue="true"
+    app:title="@string/prefs_max_distance" />
+
+  <PreferenceCategory
+    app:iconSpaceReserved="false"
+    app:title="@string/units">
+    <ListPreference
+      android:summary="%s"
+      app:defaultValue="kmh"
+      app:entries="@array/speed_units_text"
+      app:entryValues="@array/speed_units"
+      app:iconSpaceReserved="false"
+      app:key="units_speed"
+      app:title="@string/speed" />
+    <ListPreference
+      android:summary="%s"
+      app:defaultValue="km"
+      app:entries="@array/distance_units_text"
+      app:entryValues="@array/distance_units"
+      app:iconSpaceReserved="false"
+      app:key="units_distance"
+      app:title="@string/distance" />
+    <ListPreference
+      android:summary="%s"
+      app:defaultValue="meters"
+      app:entries="@array/altitude_units_text"
+      app:entryValues="@array/altitude_units"
+      app:iconSpaceReserved="false"
+      app:key="units_altitude"
+      app:title="@string/altitude2" />
+    <ListPreference
+      android:summary="%s"
+      app:defaultValue="meters_per_second"
+      app:entries="@array/climb_rate_units_text"
+      app:entryValues="@array/climb_rate_units"
+      app:iconSpaceReserved="false"
+      app:key="units_climb_rate"
+      app:title="@string/climb_rate" />
+  </PreferenceCategory>
+
+  <PreferenceCategory
+    app:iconSpaceReserved="false"
+    app:title="@string/math_model">
+    <SwitchPreferenceCompat
+      app:defaultValue="true"
+      app:iconSpaceReserved="false"
+      app:key="linear_interpolation"
+      app:summary="@string/prefs_linear_interpolation_hint"
+      app:title="@string/prefs_linear_interpolation" />
+    <SwitchPreferenceCompat
+      app:defaultValue="true"
+      app:iconSpaceReserved="false"
+      app:key="compass_declination"
+      app:title="@string/prefs_compass_declination" />
+  </PreferenceCategory>
+
+  <PreferenceCategory
+    app:iconSpaceReserved="false"
+    app:title="@string/other">
+    <SwitchPreferenceCompat
+      app:defaultValue="true"
+      app:iconSpaceReserved="false"
+      app:key="keep_screen_on"
+      app:title="@string/prefs_keep_screen_on" />
+    <SwitchPreferenceCompat
+      app:defaultValue="true"
+      app:iconSpaceReserved="false"
+      app:key="show_disclaimer"
+      app:title="@string/prefs_beware_on_start" />
+    <SwitchPreferenceCompat
+      app:defaultValue="false"
+      app:iconSpaceReserved="false"
+      app:key="show_fps"
+      app:title="@string/show_fps" />
+    <SwitchPreferenceCompat
+      app:defaultValue="false"
+      app:iconSpaceReserved="false"
+      app:key="demo_mode"
+      app:summary="@string/prefs_demo_mode_hint"
+      app:title="@string/prefs_demo_mode" />
+    <Preference
+      app:fragment="me.testcase.ognarviewer.DebugFragment"
+      app:iconSpaceReserved="false"
+      app:key="debug"
+      app:title="@string/prefs_debug" />
+  </PreferenceCategory>
+
+</PreferenceScreen>
