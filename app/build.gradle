@@ -2,6 +2,7 @@ import me.testcase.ognarviewer.GenerateDdbTask;
 
 plugins {
     alias(libs.plugins.androidApplication)
+    alias(libs.plugins.playPublisher)
     id "androidx.navigation.safeargs"
     id "checkstyle"
 }

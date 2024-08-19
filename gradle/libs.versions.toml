@@ -26,3 +26,4 @@ robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectr
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
+playPublisher = { id = "com.github.triplet.play", version = "3.10.1" }
