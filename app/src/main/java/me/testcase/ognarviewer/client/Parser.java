@@ -78,6 +78,7 @@ public class Parser {
             "GENERIC",
             "OGADSL",
             "OGAIRM", // airmate
+            "OGAPIK",
             "OGCAPT", // capturs
             "OGFLYM", // flymaster
             "OGINRE", // inreach
