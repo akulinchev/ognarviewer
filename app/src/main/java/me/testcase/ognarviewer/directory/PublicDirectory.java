@@ -33,10 +33,13 @@ public class PublicDirectory {
 
     private final Map<Long, DirectoryEntry> mEntries = new HashMap<>();
 
+    private long mAccessTime;
+
     public PublicDirectory(Context context) {
         try (final InputStream inputStream =
                      context.getResources().openRawResource(R.raw.ogn_ddb)) {
             final DataInputStream dataInputStream = new DataInputStream(inputStream);
+            mAccessTime = dataInputStream.readLong();
             while (dataInputStream.available() > 0) {
                 final long id = dataInputStream.readInt();
                 final String model = dataInputStream.readUTF();
@@ -63,5 +66,9 @@ public class PublicDirectory {
 
     public int size() {
         return mEntries.size();
+    }
+
+    public long getAccessTime() {
+        return mAccessTime;
     }
 }

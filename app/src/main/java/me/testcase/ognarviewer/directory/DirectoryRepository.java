@@ -107,4 +107,8 @@ public class DirectoryRepository {
     public void exportJson(@NonNull Uri uri) throws IOException, JSONException {
         mPrivateDirectory.exportJson(uri);
     }
+
+    public long getOgnDdbAccessTime() {
+        return mPublicDirectory.getAccessTime();
+    }
 }

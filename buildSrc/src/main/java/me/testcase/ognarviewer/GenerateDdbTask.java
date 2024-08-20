@@ -25,13 +25,17 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class GenerateDdbTask extends DefaultTask {
+    private static final SimpleDateFormat HTTP_DATE_FORMAT =
+            new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
+
     @OutputDirectory
     public String getOutputDirectory() {
         return getProject().getLayout().getBuildDirectory().get() + "/generated/res/ddb";
@@ -44,72 +48,58 @@ public class GenerateDdbTask extends DefaultTask {
             throw new RuntimeException("Cannot create " + rawResourceDir);
         }
 
-        final File ddbFile = new File(rawResourceDir, "ogn_ddb");
-        if (ddbFile.exists()) {
-            getLogger().info("Not downloading the OGN DDB again, because it already exists.");
-            getLogger().info("Delete it to re-download.");
-            return;
-        }
+        final File inFile = getProject()
+                .getLayout()
+                .getProjectDirectory()
+                .file("src/main/registrations/ogn.csv")
+                .getAsFile();
+        final File outFile = new File(rawResourceDir, "ogn_ddb");
 
-        final File valuesResourceDir = new File(getOutputDirectory(), "values");
-        if (!valuesResourceDir.exists() && !valuesResourceDir.mkdirs()) {
-            throw new RuntimeException("Cannot create " + valuesResourceDir);
-        }
-
-        final long now = System.currentTimeMillis();
-        final URL url = new URL("https://ddb.glidernet.org/download/");
-        try (InputStream inputStream = url.openStream()) {
-            final DataOutputStream outputStream = new DataOutputStream(new FileOutputStream(ddbFile));
-
-            final BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-            while (true) {
-                final String line = reader.readLine();
-                if (line == null) {
-                    break;
-                }
-                if (line.startsWith("#")) {
-                    continue;
-                }
-                final String[] values = line.split(",");
-
-                int id = Integer.parseInt(values[1].substring(1, values[1].length() - 1).trim(), 16);
-                switch (values[0]) {
-                    case "'I'":
-                        id += 0x01000000;
+        try (BufferedReader reader = new BufferedReader(new FileReader(inFile))) {
+            try (DataOutputStream out = new DataOutputStream(new FileOutputStream(outFile))) {
+                while (true) {
+                    final String line = reader.readLine();
+                    if (line == null) {
                         break;
-                    case "'F'":
-                        id += 0x02000000;
-                        break;
-                    case "'O'":
-                        id += 0x03000000;
-                        break;
-                    default:
-                        throw new RuntimeException("Unknown address type " + values[0]);
+                    }
+                    if (line.startsWith("#")) {
+                        final Date date = HTTP_DATE_FORMAT.parse(line, new ParsePosition(1));
+                        if (date != null) {
+                            out.writeLong(date.getTime());
+                        }
+                        continue;
+                    }
+                    final String[] values = line.split(",");
+
+                    int id = Integer.parseInt(values[1].substring(1, values[1].length() - 1).trim(), 16);
+                    switch (values[0]) {
+                        case "'I'":
+                            id += 0x01000000;
+                            break;
+                        case "'F'":
+                            id += 0x02000000;
+                            break;
+                        case "'O'":
+                            id += 0x03000000;
+                            break;
+                        default:
+                            throw new RuntimeException("Unknown address type " + values[0]);
+                    }
+
+                    final String model = values[2].substring(1, values[2].length() - 1).trim();
+                    final String registration = values[3].substring(1, values[3].length() - 1).trim();
+                    final String competitionNumber = values[4].substring(1, values[4].length() - 1).trim();
+
+                    if (model.isEmpty() && registration.isEmpty() && competitionNumber.isEmpty()) {
+                        continue;
+                    }
+
+                    out.writeInt(id);
+                    out.writeUTF(model);
+                    out.writeUTF(registration);
+                    out.writeUTF(competitionNumber);
                 }
-
-                final String model = values[2].substring(1, values[2].length() - 1).trim();
-                final String registration = values[3].substring(1, values[3].length() - 1).trim();
-                final String competitionNumber = values[4].substring(1, values[4].length() - 1).trim();
-
-                if (model.isEmpty() && registration.isEmpty() && competitionNumber.isEmpty()) {
-                    continue;
-                }
-
-                outputStream.writeInt(id);
-                outputStream.writeUTF(model);
-                outputStream.writeUTF(registration);
-                outputStream.writeUTF(competitionNumber);
             }
-            outputStream.close();
-        }
-
-        final File stringsFile = new File(valuesResourceDir, "strings.xml");
-        try (FileOutputStream stream = new FileOutputStream(stringsFile)) {
-            stream.write("<resources>".getBytes(StandardCharsets.UTF_8));
-            stream.write("<string name=\"ogn_ddb_access_time\">".getBytes(StandardCharsets.UTF_8));
-            stream.write(String.valueOf(now).getBytes(StandardCharsets.UTF_8));
-            stream.write("</string>".getBytes(StandardCharsets.UTF_8));
-            stream.write("</resources>".getBytes(StandardCharsets.UTF_8));
         }
     }
 }

@@ -36,6 +36,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import java.util.Date;
 
+import me.testcase.ognarviewer.App;
 import me.testcase.ognarviewer.BuildConfig;
 import me.testcase.ognarviewer.MainActivity;
 import me.testcase.ognarviewer.R;
@@ -57,7 +58,7 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         mBinding = FragmentAboutBinding.inflate(inflater, container, false);
         mBinding.textVersion.setText(getString(R.string.app_version, BuildConfig.VERSION_NAME));
-        final Date accessTime = new Date(Long.parseLong(getString(R.string.ogn_ddb_access_time)));
+        final Date accessTime = new Date(App.getDirectoryRepository().getOgnDdbAccessTime());
         mBinding.ognDdbAttribution.setText(getString(R.string.ognddb_attribution, accessTime));
         mBinding.buttonSources.setOnClickListener(this);
         mBinding.buttonIssues.setOnClickListener(this);
