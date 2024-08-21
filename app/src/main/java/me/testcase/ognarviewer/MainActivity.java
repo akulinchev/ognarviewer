@@ -18,14 +18,20 @@
 package me.testcase.ognarviewer;
 
 import android.Manifest;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -50,6 +56,8 @@ import androidx.preference.PreferenceManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -261,6 +269,39 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
         requestPermissions(missingPermissions.toArray(new String[0]), PERMISSION_REQUEST_CODE);
         // Avoid requesting the permission twice - android doesn't like it.
         mPermissionsRequestInProgress = true;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        Log.e(TAG, String.valueOf(keyCode));
+        if (BuildConfig.DEBUG && keyCode == KeyEvent.KEYCODE_ESCAPE) {
+            // Take a "transparent" screenshot for Google Play when pressing the ESC key on PC.
+            // The screenshot does not include the camera preview (that's kinda the idea).
+            final View decorView = getWindow().getDecorView();
+            final Bitmap bitmap = Bitmap.createBitmap(decorView.getWidth(), decorView.getHeight(),
+                    Bitmap.Config.ARGB_8888);
+            final Canvas canvas = new Canvas(bitmap);
+            decorView.draw(canvas);
+            final ContentValues contentValues = new ContentValues();
+            final String fileName = "ognarviewer-" + System.currentTimeMillis() + ".png";
+            contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, fileName);
+            contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
+            final ContentResolver contentResolver = getContentResolver();
+            final Uri uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    contentValues);
+            assert uri != null;
+            try (OutputStream outputStream = contentResolver.openOutputStream(uri)) {
+                assert outputStream != null;
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+                Log.i(TAG, "Saved the transparent screenshot as " + fileName);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } finally {
+                bitmap.recycle();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
