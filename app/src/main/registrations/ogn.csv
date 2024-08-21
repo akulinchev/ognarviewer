@@ -1,4 +1,6 @@
-#Tue, 20 Aug 2024 21:12:38 GMT
+#Wed, 21 Aug 2024 08:29:21 GMT
+#Exported from ddb.glidernet.org
+#License: ODC-BY (https://opendatacommons.org/licenses/by/summary/)
 #DEVICE_TYPE,DEVICE_ID,AIRCRAFT_MODEL,REGISTRATION,CN,TRACKED,IDENTIFIED
 'F','000000','HPH 304CZ-17','OK-7777','KN','Y','Y'
 'O','000001','Drone/UAV','aerobot','','Y','Y'
@@ -3950,7 +3952,7 @@
 'O','24E234','PW-5','SP-3621','LOT','Y','Y'
 'O','24E23C','SZD-50 Puchacz','SP-3357','57','Y','Y'
 'O','24E244','Piper PA-44','SP-UTM','UTM','Y','Y'
-'O','24E248','Cessna 152','SP-POZ','POZ','Y','Y'
+'O','24E248','SZD-30 Pirat','SP-2881','L','Y','Y'
 'O','24E258','Cessna 172','SP-UTE','UTE','Y','Y'
 'O','24E25C','SZD-9 Bocian','SP-3101','01','Y','Y'
 'O','24E260','SZD-9 Bocian','SP-3832','32','Y','Y'
@@ -20397,6 +20399,7 @@
 'F','DD90EA','DG-300','D-3995','GG','Y','Y'
 'F','DD90F2','LS-4','D-3487','SY','Y','Y'
 'F','DD90F8','Discus','HB-3098','LV','Y','Y'
+'F','DD90FB','Cirrus Std','F-CEVI','C63','Y','Y'
 'F','DD9101','Ikarus C42 B','D-MTGI','','Y','Y'
 'F','DD9103','ASK-21','EC-BTH','BTH','Y','Y'
 'F','DD9109','Cirrus Std','OK-0484','IMI','Y','Y'
@@ -29072,6 +29075,7 @@
 'F','DF0275','Ventus 2cxM','D-KOPI','PI','Y','Y'
 'F','DF0277','Arcus M','D-KHEL','EL','Y','Y'
 'F','DF0284','Ventus 2cxM','D-KSWE','WE','Y','Y'
+'F','DF028C','Duo Discus xl','D-5771','RD','Y','Y'
 'F','DF02A1','Hornet','W11','W11','Y','Y'
 'F','DF02AE','LS-8','D-1161','3X','Y','Y'
 'F','DF02CA','HK36 Super Dimona','D-KDPS','','Y','Y'
