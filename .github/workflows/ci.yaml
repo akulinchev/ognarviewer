@@ -21,15 +21,8 @@ jobs:
       run: ./gradlew build
     - uses: actions/upload-artifact@v4
       with:
-        name: app-debug.apk
-        path: app/build/outputs/apk/debug/app-debug.apk
-        if-no-files-found: error
-        retention-days: 14
-        compression-level: 0 # APKs are already compressed
-    - uses: actions/upload-artifact@v4
-      with:
-        name: app-release-unsigned.apk
-        path: app/build/outputs/apk/release/app-release-unsigned.apk
+        name: apks
+        path: app/build/outputs/apk/**/*.apk
         if-no-files-found: error
         retention-days: 14
         compression-level: 0 # APKs are already compressed
@@ -37,6 +30,6 @@ jobs:
       with:
         name: reports
         path: app/build/reports/
-        if-no-files-found: warning
+        if-no-files-found: warn
         retention-days: 14
         compression-level: 9
