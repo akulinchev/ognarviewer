@@ -1,0 +1,22 @@
+name: Google Play listing
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'app/src/main/play/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: temurin
+          cache: gradle
+      - run: ./gradlew publishListing
+        env:
+          ANDROID_PUBLISHER_CREDENTIALS: '${{ secrets.GOOGLE_SERVICE_ACCOUNT }}'
