@@ -11,4 +11,4 @@ with urlopen("https://ddb.glidernet.org/download/") as resp:
         f.write("#{}\n".format(resp.headers.get("Date")))
         f.write("#Exported from ddb.glidernet.org\n")
         f.write("#License: ODC-BY (https://opendatacommons.org/licenses/by/summary/)\n")
-        f.write(resp.read().decode("utf-8"))
+        f.write("\n".join(resp.read().decode("utf-8").splitlines()))
