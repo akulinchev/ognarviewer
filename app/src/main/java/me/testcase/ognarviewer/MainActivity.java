@@ -273,7 +273,6 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        Log.e(TAG, String.valueOf(keyCode));
         if (BuildConfig.DEBUG && keyCode == KeyEvent.KEYCODE_ESCAPE) {
             // Take a "transparent" screenshot for Google Play when pressing the ESC key on PC.
             // The screenshot does not include the camera preview (that's kinda the idea).
