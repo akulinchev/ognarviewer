@@ -1,1 +1,1 @@
-Discover aircraft around you
+Experimental augmented reality client to the Open Glider Network (OGN).
