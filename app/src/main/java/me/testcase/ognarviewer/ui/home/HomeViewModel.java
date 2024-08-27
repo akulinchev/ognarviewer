@@ -131,6 +131,7 @@ public final class HomeViewModel extends AndroidViewModel implements SensorEvent
         mWorld.setLocationPredictionEnabled(mSharedPreferences.getBoolean("linear_interpolation",
                 true));
         setDemoMode(mSharedPreferences.getBoolean("demo_mode", false));
+        mClient.setHostname(mSharedPreferences.getString("aprs_server", Client.DEFAULT_HOST));
 
         mSensorManager = (SensorManager) application.getSystemService(Context.SENSOR_SERVICE);
         mMagneticFieldSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
@@ -405,11 +406,13 @@ public final class HomeViewModel extends AndroidViewModel implements SensorEvent
         if (key == null) {
             setDemoMode(false);
             mWorld.setLocationPredictionEnabled(true);
+            mClient.setHostname(Client.DEFAULT_HOST);
         } else if (key.equals("linear_interpolation")) {
-            mWorld.setLocationPredictionEnabled(mSharedPreferences.getBoolean(
-                    "linear_interpolation", true));
+            mWorld.setLocationPredictionEnabled(mSharedPreferences.getBoolean(key, true));
         } else if (key.equals("demo_mode")) {
-            setDemoMode(mSharedPreferences.getBoolean("demo_mode", false));
+            setDemoMode(mSharedPreferences.getBoolean(key, false));
+        } else if (key.equals("aprs_server")) {
+            mClient.setHostname(mSharedPreferences.getString(key, Client.DEFAULT_HOST));
         }
     }
 

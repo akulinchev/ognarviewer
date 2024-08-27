@@ -107,11 +107,20 @@
       app:key="show_fps"
       app:title="@string/show_fps" />
     <SwitchPreferenceCompat
+      android:disableDependentsState="true"
       app:defaultValue="false"
       app:iconSpaceReserved="false"
       app:key="demo_mode"
       app:summary="@string/prefs_demo_mode_hint"
       app:title="@string/prefs_demo_mode" />
+    <EditTextPreference
+      android:defaultValue="aprs.glidernet.org"
+      android:dependency="demo_mode"
+      android:key="aprs_server"
+      android:singleLine="true"
+      android:title="@string/aprs_server"
+      app:iconSpaceReserved="false"
+      app:useSimpleSummaryProvider="true" />
     <Preference
       app:fragment="me.testcase.ognarviewer.DebugFragment"
       app:iconSpaceReserved="false"

@@ -36,17 +36,28 @@ import me.testcase.ognarviewer.BuildConfig;
 public class Client {
     private static final String TAG = "Client";
 
-    private static final String HOST = "aprs.glidernet.org";
-    private static final int PORT = 14580;
+    public static final String DEFAULT_HOST = "aprs.glidernet.org";
+    public static final int DEFAULT_PORT = 14580;
 
     private ClientThread mThread;
+    private String mHostname = DEFAULT_HOST;
+
+    /**
+     * Overrides the default APRS hostname.
+     *
+     * <p>The new hostname takes effect on the next connection attempt.</p>
+     */
+    @MainThread
+    public void setHostname(String hostname) {
+        mHostname = hostname;
+    }
 
     @MainThread
     public void connect(Location location, int radius, MessageListener listener, Handler handler) {
         if (handler == null) {
             handler = new Handler(Looper.getMainLooper());
         }
-        mThread = new ClientThread(location, radius, listener, handler);
+        mThread = new ClientThread(mHostname, location, radius, listener, handler);
         mThread.start();
     }
 
@@ -79,13 +90,16 @@ public class Client {
         private static final int KEEP_ALIVE_INTERVAL = 30 * 1000;
         private static final byte[] KEEP_ALIVE = new byte[]{'#', '\n'};
 
+        private final String mHostname;
         private final Location mLocation;
         private final int mRadius;
         private final MessageListener mListener;
         private final Handler mHandler;
 
-        public ClientThread(Location location, int radius, MessageListener listener,
-                            Handler handler) {
+        @MainThread
+        public ClientThread(String hostname, Location location, int radius,
+                            MessageListener listener, Handler handler) {
+            mHostname = hostname;
             mLocation = location;
             mRadius = radius;
             mListener = listener;
@@ -98,8 +112,8 @@ public class Client {
             // But likely they have many, so we can try all of them.
             final InetAddress[] addresses;
             try {
-                Log.i(TAG, "Trying to resolve " + HOST);
-                addresses = InetAddress.getAllByName(HOST);
+                Log.i(TAG, "Trying to resolve " + mHostname);
+                addresses = InetAddress.getAllByName(mHostname);
             } catch (UnknownHostException e) {
                 Log.e(TAG, "Resolved failed!");
                 postAprsClientError(e);
@@ -108,7 +122,7 @@ public class Client {
             Log.i(TAG, "Resolve succeeded, got " + addresses.length + " addresses");
             for (int i = 0; i < addresses.length; ++i) {
                 Log.v(TAG, "Trying " + addresses[i]);
-                try (Socket socket = new Socket(addresses[i], PORT)) {
+                try (Socket socket = new Socket(addresses[i], DEFAULT_PORT)) {
                     socket.setTcpNoDelay(true);
                     final String command = String.format(Locale.US,
                             "user NOCALL pass -1 vers ogn-ar-viewer %s filter r/%+.3f/%+.3f/%d\n",
