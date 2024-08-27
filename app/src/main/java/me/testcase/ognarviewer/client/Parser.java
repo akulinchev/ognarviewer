@@ -95,6 +95,7 @@ public class Parser {
             "OGSKYL", // skylines
             "OGSPID", // spider
             "OGSPOT",
+            "SimpleVFR", // EasyVFR (https://easyvfr4.aero)
     };
 
     private final BufferedReader mReader;
