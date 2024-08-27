@@ -26,6 +26,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -45,6 +47,9 @@ import me.testcase.ognarviewer.databinding.FragmentAboutBinding;
 public class AboutFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "AboutFragment";
 
+    private final ActivityResultLauncher<Intent> mSendEmail = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> { });
+
     private FragmentAboutBinding mBinding;
 
     @Override
@@ -62,6 +67,7 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
         mBinding.ognDdbAttribution.setText(getString(R.string.ognddb_attribution, accessTime));
         mBinding.buttonSources.setOnClickListener(this);
         mBinding.buttonIssues.setOnClickListener(this);
+        mBinding.buttonContact.setOnClickListener(this);
         return mBinding.getRoot();
     }
 
@@ -104,12 +110,19 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        final Intent intent = new Intent(Intent.ACTION_VIEW);
         if (v == mBinding.buttonSources) {
+            final Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("https://github.com/akulinchev/ognarviewer"));
-        } else {
+            startActivity(intent);
+        } else if (v == mBinding.buttonIssues) {
+            final Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("https://github.com/akulinchev/ognarviewer/issues"));
+            startActivity(intent);
+        } else if (v == mBinding.buttonContact) {
+            final Intent intent = new Intent(Intent.ACTION_SENDTO);
+            intent.setData(Uri.parse("mailto:ivan.akulinchev@gmail.com"));
+            intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
+            mSendEmail.launch(intent);
         }
-        startActivity(intent);
     }
 }

@@ -244,4 +244,6 @@
   <string name="edit">Edit</string>
 
   <string name="aprs_server">APRS server</string>
+
+  <string name="contact_author">Contact author</string>
 </resources>

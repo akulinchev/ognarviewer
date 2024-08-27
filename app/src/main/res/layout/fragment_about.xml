@@ -88,6 +88,14 @@
         android:layout_marginHorizontal="16dp"
         android:text="@string/bug_tracker" />
 
+      <Button
+        android:id="@+id/button_contact"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:text="@string/contact_author" />
+
     </LinearLayout>
 
   </androidx.core.widget.NestedScrollView>
