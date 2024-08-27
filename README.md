@@ -12,3 +12,8 @@ The application needs to send your location to the OGN in order to listen for ai
 The good news is that OGN AR Viewer reduces the location accuracy to about 5 km before transmitting it and then restores it back on recipient, so the fine location never leaves your device.
 It further anonymizes you by connecting to the OGN without identification (other clients based on the official library generate an identifier based on your hostname).
 Check out the [privacy policy](https://ognarviewer.testcase.me/en/privacy.html) to learn more (it is written in simple language and has illustrations).
+
+## Further work
+
+- Use OpenCV to detect aircraft visually and improve the precision.
+- Consider a Kalman filter to improve the GPS accuracy.
