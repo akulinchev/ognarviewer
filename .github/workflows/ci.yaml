@@ -25,7 +25,6 @@ jobs:
           RELEASE_KEYSTORE: ${{ secrets.RELEASE_KEYSTORE }}
       - run: ./gradlew build
         env:
-          RELEASE_KEYSTORE_FILE: /tmp/keystore.jks
           RELEASE_KEYSTORE_ALIAS: ognarviewer
           RELEASE_KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
       - if: always()
