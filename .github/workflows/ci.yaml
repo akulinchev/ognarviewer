@@ -6,8 +6,8 @@ on:
       - 'README.md'
       - 'app/src/main/play/**'
   schedule:
-    # Every day at 12:30 UTC because we test the client with real data.
-    - cron: '30 12 * * *'
+    # Every day at 11:30 UTC because we test the client with real data.
+    - cron: '30 11 * * *'
 
 jobs:
   build:
