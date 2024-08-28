@@ -8,6 +8,7 @@ on:
   schedule:
     # Every day at 11:30 UTC because we test the client with real data.
     - cron: '30 11 * * *'
+  workflow_dispatch:
 
 jobs:
   build:
