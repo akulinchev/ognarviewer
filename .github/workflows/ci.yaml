@@ -31,5 +31,7 @@ jobs:
         run: rm -f /tmp/keystore.jks || true
       - uses: actions/upload-artifact@v4
         with:
-          path: app/build/
+          path: |
+            app/build/outputs/
+            app/build/reports/
           if-no-files-found: error
