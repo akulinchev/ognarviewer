@@ -83,6 +83,7 @@ public class Parser {
             "OGFLYM", // flymaster
             "OGINRE", // inreach
             "OGLT24",
+            "OGNATO",
             "OGNAVI", // naviter
             "OGNFNO",
             "OGNFNT",

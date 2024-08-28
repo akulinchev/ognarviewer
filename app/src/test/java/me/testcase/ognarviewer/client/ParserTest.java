@@ -278,6 +278,7 @@ public class ParserTest {
 
         Assert.assertTrue(Parser.isNotImplementedYet("97076TGO>OGNSXR,TCPIP*,qAC,GLIDERN1:/143112h4948.83NI00959.01E&/A=000787"));
         Assert.assertTrue(Parser.isNotImplementedYet("97076TGO>OGNSXR,TCPIP*,qAC,GLIDERN1:>143112h vMB145-ESP32-SX1276-OGNbase 0/min 0/0Acfts[1h]"));
+        Assert.assertTrue(Parser.isNotImplementedYet("ATO4849EB>OGNATO,qAS,ATO761638:/095144h5243.89N/00630.64E'247/000/A=000174 !W61! id214849EB  gps1x1"));
         Assert.assertTrue(Parser.isNotImplementedYet("DMDDD>SimpleVFR,TCPIP*,qAC,GLIDERN3:/184547h5201.21N/00958.15E'182/096/A=003609 !W66!"));
         Assert.assertTrue(Parser.isNotImplementedYet("FLR3FF039>OGADSL,qAS,EDVI:/114029h5148.43N\\00922.71E^246/009/A=000938 !W09! id223FF039 -098fpm 37.8dB -6.8kHz gps63x63"));
         Assert.assertTrue(Parser.isNotImplementedYet("FLRDDFD06>OGAPIK,qAS,APIK:/172432h4533.40N/00600.14E'006/048/A=003202 !W45! id06DDFD06 euiecdb86fffe000e06"));
