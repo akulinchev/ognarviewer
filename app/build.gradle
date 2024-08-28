@@ -23,12 +23,22 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        release {
+            storeFile System.getenv("RELEASE_KEYSTORE_FILE")
+            storePassword System.getenv("RELEASE_KEYSTORE_PASSWORD")
+            keyAlias System.getenv("RELEASE_KEYSTORE_ALIAS")
+            keyPassword System.getenv("RELEASE_KEYSTORE_PASSWORD")
+        }
+    }
+
     buildTypes {
         debug {
             applicationIdSuffix ".debug"
         }
         release {
             minifyEnabled false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }

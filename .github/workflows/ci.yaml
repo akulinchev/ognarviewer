@@ -20,18 +20,17 @@ jobs:
           distribution: temurin
           cache: gradle
       - uses: gradle/actions/wrapper-validation@v4
+      - run: echo "$RELEASE_KEYSTORE" | base64 -d > /tmp/keystore.jks
+        env:
+          RELEASE_KEYSTORE: ${{ secrets.RELEASE_KEYSTORE }}
       - run: ./gradlew build
+        env:
+          RELEASE_KEYSTORE_FILE: /tmp/keystore.jks
+          RELEASE_KEYSTORE_ALIAS: ognarviewer
+          RELEASE_KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
+      - if: always()
+        run: rm -f /tmp/keystore.jks || true
       - uses: actions/upload-artifact@v4
         with:
-          name: apks
-          path: app/build/outputs/apk/**/*.apk
+          path: app/build/
           if-no-files-found: error
-          retention-days: 14
-          compression-level: 0 # APKs are already compressed
-      - uses: actions/upload-artifact@v4
-        with:
-          name: reports
-          path: app/build/reports/
-          if-no-files-found: warn
-          retention-days: 14
-          compression-level: 9
