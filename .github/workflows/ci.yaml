@@ -29,6 +29,7 @@ jobs:
       - if: success() && startsWith(github.ref, 'refs/tags/v')
         run: |
           echo "$RELEASE_KEYSTORE" | base64 -d > /tmp/keystore.jks
+          unset RELEASE_KEYSTORE
           ./gradlew assembleRelease bundleRelease
         env:
           RELEASE_KEYSTORE: ${{ secrets.RELEASE_KEYSTORE }}
