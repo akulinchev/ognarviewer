@@ -117,6 +117,17 @@ public class HomeViewModelTest {
         mModel.onLocationChanged(location);
         Assert.assertEquals(HomeViewModel.OVERLAY_MODE_AUTO_COMPASS_CALIBRATION, (long) mModel.getOverlayMode().getValue());
 
+        // Now set a very high accuracy, but tell the code it was not set.
+        // This happens on some devices and users start giving me 1-star reviews.
+        location.setAccuracy(100);
+        location.setVerticalAccuracyMeters(50);
+        mModel.onLocationChanged(location);
+        Assert.assertEquals(HomeViewModel.OVERLAY_MODE_LOW_ACCURACY, (long) mModel.getOverlayMode().getValue());
+        location.removeAccuracy(); // Doesn't change the value (100), only removes the flag.
+        location.removeVerticalAccuracy(); // Doesn't change the value (50), only removes the flag.
+        mModel.onLocationChanged(location);
+        Assert.assertEquals(HomeViewModel.OVERLAY_MODE_AUTO_COMPASS_CALIBRATION, (long) mModel.getOverlayMode().getValue());
+
         // First sensor event received.
         /*final SensorEvent sensorEvent = SensorEventBuilder.newBuilder()
                 .setSensor(sensor)
@@ -251,20 +262,31 @@ public class HomeViewModelTest {
         Assert.assertEquals(130, mModel.getLocationAccuracy().getValue().horizontal, 0.0001);
         Assert.assertEquals(100, mModel.getLocationAccuracy().getValue().vertical, 0.0001);
 
+        // Third fix in 3 seconds. This time, the accuracy is not set => should be -1.
+        location.setElapsedRealtimeNanos(location.getElapsedRealtimeNanos() + 3L * 1000 * 1000 * 1000);
+        location.setLatitude(49);
+        location.setLongitude(7);
+        location.removeAccuracy();
+        location.removeVerticalAccuracy();
+        mShadowLocationManager.simulateLocation(location);
+        Robolectric.flushForegroundThreadScheduler();
+        Assert.assertEquals(-1, mModel.getLocationAccuracy().getValue().horizontal, 0.0001);
+        Assert.assertEquals(-1, mModel.getLocationAccuracy().getValue().vertical, 0.0001);
+
         // Unsubscribe from location updates.
         mModel.stopLocationUpdates();
 
-        // Third fix in 2 seconds and at another position.
+        // Fourth fix in 4 seconds and at another position.
         // Make sure the listener has really unsubscribed.
-        location.setElapsedRealtimeNanos(location.getElapsedRealtimeNanos() + 2L * 1000 * 1000 * 1000);
-        location.setLatitude(49);
-        location.setLongitude(7);
+        location.setElapsedRealtimeNanos(location.getElapsedRealtimeNanos() + 4L * 1000 * 1000 * 1000);
+        location.setLatitude(49.1);
+        location.setLongitude(7.1);
         location.setAccuracy(13);
         location.setVerticalAccuracyMeters(10);
         mShadowLocationManager.simulateLocation(location);
         Robolectric.flushForegroundThreadScheduler();
-        Assert.assertEquals(130, mModel.getLocationAccuracy().getValue().horizontal, 0.0001);
-        Assert.assertEquals(100, mModel.getLocationAccuracy().getValue().vertical, 0.0001);
+        Assert.assertEquals(-1, mModel.getLocationAccuracy().getValue().horizontal, 0.0001);
+        Assert.assertEquals(-1, mModel.getLocationAccuracy().getValue().vertical, 0.0001);
     }
 
     @Test
