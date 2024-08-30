@@ -19,5 +19,14 @@ package me.testcase.ognarviewer.client;
 
 public abstract class AprsMessage {
     public String callSign;
+
+    /**
+     * The time at which the values in this message were measured.
+     *
+     * <p>The time is represented as the number of logical "milliseconds" since the Unix epoch. Note
+     * that these are not real milliseconds, but more like the number of days multiplied by
+     * <code>86400000</code>. In June and December, anomalies are especially likely due to the
+     * <a href="https://en.wikipedia.org/wiki/Leap_second">leap seconds</a>.</p>
+     */
     public long timestamp;
 }
