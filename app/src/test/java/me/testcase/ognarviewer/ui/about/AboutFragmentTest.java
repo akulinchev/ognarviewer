@@ -33,6 +33,7 @@ import androidx.navigation.Navigation;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -47,6 +48,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import me.testcase.ognarviewer.App;
+import me.testcase.ognarviewer.BuildConfig;
 import me.testcase.ognarviewer.MainActivity;
 import me.testcase.ognarviewer.R;
 
@@ -79,6 +81,7 @@ public class AboutFragmentTest {
 
     @Test
     public void testLinks() {
+        Assume.assumeTrue(BuildConfig.DEBUG);
         try (FragmentScenario<AboutFragment> scenario = FragmentScenario.launch(AboutFragment.class, null, R.style.Theme_App)) {
             scenario.moveToState(Lifecycle.State.RESUMED);
             scenario.onFragment(fragment -> {
@@ -108,6 +111,7 @@ public class AboutFragmentTest {
 
     @Test
     public void testVersion() {
+        Assume.assumeTrue(BuildConfig.DEBUG);
         try (FragmentScenario<AboutFragment> scenario = FragmentScenario.launch(AboutFragment.class, null, R.style.Theme_App)) {
             scenario.moveToState(Lifecycle.State.RESUMED);
             scenario.onFragment(fragment -> {
@@ -119,6 +123,7 @@ public class AboutFragmentTest {
 
     @Test
     public void testOgnDdbAttribution() {
+        Assume.assumeTrue(BuildConfig.DEBUG);
         try (FragmentScenario<AboutFragment> scenario = FragmentScenario.launch(AboutFragment.class, null, R.style.Theme_App)) {
             scenario.moveToState(Lifecycle.State.RESUMED);
             scenario.onFragment(fragment -> {
