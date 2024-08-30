@@ -26,8 +26,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -46,9 +44,6 @@ import me.testcase.ognarviewer.databinding.FragmentAboutBinding;
 
 public class AboutFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "AboutFragment";
-
-    private final ActivityResultLauncher<Intent> mSendEmail = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(), result -> { });
 
     private FragmentAboutBinding mBinding;
 
@@ -122,7 +117,7 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
             final Intent intent = new Intent(Intent.ACTION_SENDTO);
             intent.setData(Uri.parse("mailto:ivan.akulinchev@gmail.com"));
             intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
-            mSendEmail.launch(intent);
+            startActivity(intent);
         }
     }
 }
