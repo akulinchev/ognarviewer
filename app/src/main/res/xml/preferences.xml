@@ -27,8 +27,8 @@
     app:title="@string/prefs_show_compass" />
 
   <SeekBarPreference
-    android:max="30"
-    app:defaultValue="20"
+    android:max="50"
+    app:defaultValue="30"
     app:iconSpaceReserved="false"
     app:key="max_distance"
     app:min="1"

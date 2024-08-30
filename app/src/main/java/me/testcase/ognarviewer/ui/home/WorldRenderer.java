@@ -66,6 +66,8 @@ import me.testcase.ognarviewer.world.World;
 public class WorldRenderer implements GLSurfaceView.Renderer {
     private static final String TAG = "WorldRenderer";
 
+    public static final int DEFAULT_DISTANCE = 30;
+
     private static final float SCREEN_MARGIN = 20;
 
     private static final float MANUAL_ADJUSTMENT_LIMIT = 10; // In degrees.
@@ -293,7 +295,7 @@ public class WorldRenderer implements GLSurfaceView.Renderer {
         mShowReceivers = preferences.getBoolean("show_receivers", true);
         mShowCompass = preferences.getBoolean("show_compass", true);
         mShowFpsCounter = preferences.getBoolean("show_fps", false);
-        mMaxDistance = preferences.getInt("max_distance", 20) * 1000;
+        mMaxDistance = preferences.getInt("max_distance", DEFAULT_DISTANCE) * 1000;
         mDistanceUnits = preferences.getString("units_distance", "km");
         mCompassDeclination = preferences.getBoolean("compass_declination", true);
         mDemoMode = preferences.getBoolean("demo_mode", false);

@@ -70,8 +70,6 @@ public final class HomeViewModel extends AndroidViewModel implements SensorEvent
 
     private static final int MINIMUM_ACCURACY = 10;
 
-    private static final int DEFAULT_DISTANCE = 20;
-
     private final World mWorld = new World();
     private final Client mClient = new Client();
 
@@ -472,7 +470,8 @@ public final class HomeViewModel extends AndroidViewModel implements SensorEvent
         if (mOgnLocation == null) {
             return;
         }
-        final int maxDistance = mSharedPreferences.getInt("max_distance", DEFAULT_DISTANCE);
+        final int maxDistance = mSharedPreferences.getInt("max_distance",
+                WorldRenderer.DEFAULT_DISTANCE);
         mClient.connect(mOgnLocation, maxDistance + LocationObfuscator.COARSE_ACCURACY_KM, this,
                 null);
         mShowReconnectDialog.setValue(false);
