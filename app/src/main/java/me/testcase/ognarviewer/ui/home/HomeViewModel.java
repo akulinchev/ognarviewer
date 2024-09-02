@@ -284,12 +284,7 @@ public final class HomeViewModel extends AndroidViewModel implements SensorEvent
         accuracy.vertical = location.hasVerticalAccuracy()
                 ? location.getVerticalAccuracyMeters() : -1;
         mLocationAccuracy.setValue(accuracy);
-        if ((location.hasAccuracy()
-                && location.getAccuracy() <= MINIMUM_ACCURACY
-                || !location.hasAccuracy())
-                && (location.hasVerticalAccuracy()
-                && location.getVerticalAccuracyMeters() <= MINIMUM_ACCURACY
-                || !location.hasVerticalAccuracy())) {
+        if (location.getAccuracy() <= MINIMUM_ACCURACY) {
             mGoodGpsAccuracy = true;
             if (mOgnLocation == null || mOgnLocation.distanceTo(location) > 5000) {
                 mClient.disconnect();
