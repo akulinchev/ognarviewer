@@ -117,14 +117,13 @@ public class HomeViewModelTest {
         mModel.onLocationChanged(location);
         Assert.assertEquals(HomeViewModel.OVERLAY_MODE_AUTO_COMPASS_CALIBRATION, (long) mModel.getOverlayMode().getValue());
 
-        // Now set a very high accuracy, but tell the code it was not set.
+        // Try good a horizontal and a bad vertical accuracies.
         // This happens on some devices and users start giving me 1-star reviews.
-        location.setAccuracy(100);
-        location.setVerticalAccuracyMeters(50);
+        location.setAccuracy(11);
+        location.setVerticalAccuracyMeters(100);
         mModel.onLocationChanged(location);
         Assert.assertEquals(HomeViewModel.OVERLAY_MODE_LOW_ACCURACY, (long) mModel.getOverlayMode().getValue());
-        location.removeAccuracy(); // Doesn't change the value (100), only removes the flag.
-        location.removeVerticalAccuracy(); // Doesn't change the value (50), only removes the flag.
+        location.setAccuracy(10);
         mModel.onLocationChanged(location);
         Assert.assertEquals(HomeViewModel.OVERLAY_MODE_AUTO_COMPASS_CALIBRATION, (long) mModel.getOverlayMode().getValue());
 
