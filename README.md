@@ -4,7 +4,8 @@ This is the source code of an augmented reality Android client to the [Open Glid
 
 <img src="app/src/main/play/listings/en-US/graphics/phone-screenshots/1.png" height="500">
 
-<a href="https://play.google.com/store/apps/details?id=me.testcase.ognarviewer&utm_source=github&utm_campaign=readme"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" height="75"></a>
+<a href="https://play.google.com/store/apps/details?id=me.testcase.ognarviewer&utm_source=github&utm_campaign=readme"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" height="75" alt="Get it on Google Play"></a>
+<a href="https://f-droid.org/packages/me.testcase.ognarviewer"><img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="75" alt="Get it on F-Droid"></a>
 
 ## Privacy note
 
