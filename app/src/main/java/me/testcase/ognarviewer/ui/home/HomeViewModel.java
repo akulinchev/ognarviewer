@@ -28,13 +28,13 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.GnssStatus;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.OnNmeaMessageListener;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.location.LocationListenerCompat;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -58,7 +58,7 @@ import me.testcase.ognarviewer.world.World;
  * <p>An instance of this class should outlive configuration changes (e.g. screen rotation).</p>
  */
 public final class HomeViewModel extends AndroidViewModel implements SensorEventListener,
-        LocationListener, OnNmeaMessageListener,
+        LocationListenerCompat, OnNmeaMessageListener,
         SharedPreferences.OnSharedPreferenceChangeListener, Client.MessageListener {
     private static final String TAG = "HomeViewModel";
 
