@@ -280,6 +280,7 @@ public class ParserTest {
         Assert.assertTrue(Parser.isNotImplementedYet("97076TGO>OGNSXR,TCPIP*,qAC,GLIDERN1:>143112h vMB145-ESP32-SX1276-OGNbase 0/min 0/0Acfts[1h]"));
         Assert.assertTrue(Parser.isNotImplementedYet("ATO4849EB>OGNATO,qAS,ATO761638:/095144h5243.89N/00630.64E'247/000/A=000174 !W61! id214849EB  gps1x1"));
         Assert.assertTrue(Parser.isNotImplementedYet("DMDDD>SimpleVFR,TCPIP*,qAC,GLIDERN3:/184547h5201.21N/00958.15E'182/096/A=003609 !W66!"));
+        Assert.assertTrue(Parser.isNotImplementedYet("do6gz-6>APRRDZ,TCPIP*,qAC,GLIDERN4:!5158.93N/00950.65E( rdzTTGOsonde-dev20240924"));
         Assert.assertTrue(Parser.isNotImplementedYet("FLR3FF039>OGADSL,qAS,EDVI:/114029h5148.43N\\00922.71E^246/009/A=000938 !W09! id223FF039 -098fpm 37.8dB -6.8kHz gps63x63"));
         Assert.assertTrue(Parser.isNotImplementedYet("FLRDDFD06>OGAPIK,qAS,APIK:/172432h4533.40N/00600.14E'006/048/A=003202 !W45! id06DDFD06 euiecdb86fffe000e06"));
         Assert.assertTrue(Parser.isNotImplementedYet("FMTFE1D8C>OGFLYM,qAS,FLYMASTER:/142351h4535.51N/00645.14Eg000/000/A=002477 !W52! id1CFE1D8C -011fpm +0.0rot"));
@@ -288,6 +289,7 @@ public class ParserTest {
         Assert.assertTrue(Parser.isNotImplementedYet("FXC085DD4>FXCAPP,qAS,FLYXC:/141254h4647.35N/00537.85Eg075/025/A=004839 !W51! id1E085DD4"));
         Assert.assertTrue(Parser.isNotImplementedYet("ICA3FFA1F>OGNTRK,qAS,BRTWRSTLU:/142348h4934.05N\\00811.61E^133/081/A=002244 !W03! id213FFA1F -336fpm -0.1rot FL022.47 13.5dB -2.7kHz gps2x3"));
         Assert.assertTrue(Parser.isNotImplementedYet("ICA48665B>OGNSKY,qAS,SafeSky:/142355h5157.54N/00558.18E'296/087/A=002080 !W43! id2048665B +000fpm gps2x1"));
+        Assert.assertTrue(Parser.isNotImplementedYet("ICA4B292C>OGFLR7,qAS,Letzi:/114118h4710.59N\00849.71E^091/125/A=004154 !W41! id214B292C -138fpm -0.2rot 8.0dB -6.5kHz gps2x3"));
         Assert.assertTrue(Parser.isNotImplementedYet("MOITZFELD>APWEE5,TCPIP*,qAC,GLIDERN4:@031710z5058.12N/00709.19E_336/004g007t072r000p011P011b10128h66L037.weewx-5.0.2-WXT5x0"));
         Assert.assertTrue(Parser.isNotImplementedYet("MTKEB2389>OGNMTK,qAS,Microtrak:/143325h4524.93N/00523.27E'260/043/A=002992 !W50! id0FEB2389"));
         Assert.assertTrue(Parser.isNotImplementedYet("OGNF344FD>OGAIRM,qAS,Airmate:/030905h4978.59N/00756.60Ez092/116/A=002499 !W01! id0BF344FD -132fpm +0.0rot"));

@@ -72,6 +72,7 @@ public class Parser {
                     + "(?:(?<temperature>[+-]\\d++\\.\\d++)C )?");
 
     private static final String[] UNSUPPORTED = {
+            "APRRDZ",
             "APWEE5",
             "APWEE5",
             "FXCAPP",
@@ -80,6 +81,7 @@ public class Parser {
             "OGAIRM", // airmate
             "OGAPIK",
             "OGCAPT", // capturs
+            "OGFLR7",
             "OGFLYM", // flymaster
             "OGINRE", // inreach
             "OGLT24",
