@@ -374,6 +374,9 @@ public class Parser {
         if (message.endsWith("AVIONIX ENGINEERING ADS-B/OGN receiver")) {
             return true;
         }
+        if (message.endsWith("&Using AirGw2/LsaSi")) {
+            return true; // They provide us no altitude - useless for AR anyway.
+        }
         final int index = message.indexOf('>');
         if (index == -1) {
             return false;

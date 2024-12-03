@@ -275,6 +275,7 @@ public class ParserTest {
         Assert.assertTrue(Parser.isNotImplementedYet("PWASFG>APRS,TCPIP*,qAC,GLIDERN1:>141440h v20240712 OGN-R/PilotAware"));
         Assert.assertTrue(Parser.isNotImplementedYet("Champsaur>OGNSDR,TCPIP*,qAC,GLIDERN5:/111344h4438.73NI00610.40E&/A=003487 SoftRF"));
         Assert.assertTrue(Parser.isNotImplementedYet("EDTQ2>OGNSDR,TCPIP*,qAC,GLIDERN5:/111404h4851.90NI00913.35E&/A=000961 AVIONIX ENGINEERING ADS-B/OGN receiver"));
+        Assert.assertTrue(Parser.isNotImplementedYet("DO6GZ>APRS,TCPIP*,qAC,GLIDERN3:!5158.92N/00950.63E&Using AirGw2/LsaSi"));
 
         Assert.assertTrue(Parser.isNotImplementedYet("97076TGO>OGNSXR,TCPIP*,qAC,GLIDERN1:/143112h4948.83NI00959.01E&/A=000787"));
         Assert.assertTrue(Parser.isNotImplementedYet("97076TGO>OGNSXR,TCPIP*,qAC,GLIDERN1:>143112h vMB145-ESP32-SX1276-OGNbase 0/min 0/0Acfts[1h]"));
