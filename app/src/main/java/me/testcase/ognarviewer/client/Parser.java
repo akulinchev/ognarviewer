@@ -34,7 +34,7 @@ public class Parser {
     private static final String TAG = "Parser";
 
     private static final Pattern AIRCRAFT_LOCATION_RE = Pattern.compile(
-            "^(?<callSign>\\w++)>(?:APRS|OGFLR|OGADSB),[^:]++:/"
+            "^(?<callSign>\\w++)>(?:APRS|OGFLR[67]?+|OGADSB),[^:]++:/"
                     + "(?<time>\\d{6})h" // FIXME may be ______
                     + "(?<latDeg>\\d{2})(?<latMin>\\d{2}\\.\\d{2})(?<latNS>[NS])."
                     + "(?<lonDeg>\\d{3})(?<lonMin>\\d{2}\\.\\d{2})(?<lonEW>[EW])."
@@ -81,7 +81,6 @@ public class Parser {
             "OGAIRM", // airmate
             "OGAPIK",
             "OGCAPT", // capturs
-            "OGFLR7",
             "OGFLYM", // flymaster
             "OGINRE", // inreach
             "OGLT24",

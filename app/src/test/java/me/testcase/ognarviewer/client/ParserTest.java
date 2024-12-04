@@ -50,7 +50,8 @@ public class ParserTest {
                 + "ICA3E6018>OGFLR,qAS,EDSW:/175400h4811.72N/00756.11E'062/051/A=003708 !W54! id053E6018 +297fpm -0.1rot 11.5dB -2.8kHz gps2x3\n"
                 + "FLRDDD494>OGFLR,qAS,LFGA:/175400h4806.73N/00721.79E'161/000/A=000699 !W05! id06DDD494 -296fpm +0.0rot 42.2dB -9.1kHz gps8x15 +3.5dBm\n"
                 + "FLRDDC287>OGFLR,qAS,EDKV:/175400h5022.73N/00636.71E'198/075/A=003888 !W20! id0ADDC287 +099fpm +0.0rot 4.0dB 2e -1.0kHz gps2x4 s7.22 h1E\n"
-                + "FLR3e5cbc>APRS,qAS,NAVITER2:/142955h5138.38N/00720.06E'000/000/A=000180 !W05! id063e5cbc +000fpm +0.0rot");
+                + "FLR3e5cbc>APRS,qAS,NAVITER2:/142955h5138.38N/00720.06E'000/000/A=000180 !W05! id063e5cbc +000fpm +0.0rot\n"
+                + "ICA4B292C>OGFLR7,qAS,Letzi:/114118h4710.59N\\00849.71E^091/125/A=004154 !W41! id214B292C -138fpm -0.2rot 8.0dB -6.5kHz gps2x3");
 
         testAircraftLocation(parser.parse(), "ICA896179", 49.69662, 10.34825, 110, 982, 10963, 0, Double.NaN);
         testAircraftLocation(parser.parse(), "ICA4D2511", 48.66113, 8.04467, 0, 0, 6938, Double.NaN, Double.NaN);
@@ -64,6 +65,7 @@ public class ParserTest {
         testAircraftLocation(parser.parse(), "FLRDDD494", 48.11217, 7.36325, 161, 0, 213, -1.5, 0.0);
         testAircraftLocation(parser.parse(), "FLRDDC287", 50.37887, 6.61183, 198, 139, 1185, 0.5, 0.0);
         testAircraftLocation(parser.parse(), "FLR3e5cbc", 51.63967, 7.33442, 0, 0, 55, 0.0, 0.0);
+        testAircraftLocation(parser.parse(), "ICA4B292C", 47.17657, 8.82852, 91, 232, 1266, -0.7, -0.6);
     }
 
     private void testAircraftLocation(AprsMessage message, String callSign, double lat, double lon, int heading, int speed, int alt, double climbRate, double turnRate) {
@@ -290,7 +292,6 @@ public class ParserTest {
         Assert.assertTrue(Parser.isNotImplementedYet("FXC085DD4>FXCAPP,qAS,FLYXC:/141254h4647.35N/00537.85Eg075/025/A=004839 !W51! id1E085DD4"));
         Assert.assertTrue(Parser.isNotImplementedYet("ICA3FFA1F>OGNTRK,qAS,BRTWRSTLU:/142348h4934.05N\\00811.61E^133/081/A=002244 !W03! id213FFA1F -336fpm -0.1rot FL022.47 13.5dB -2.7kHz gps2x3"));
         Assert.assertTrue(Parser.isNotImplementedYet("ICA48665B>OGNSKY,qAS,SafeSky:/142355h5157.54N/00558.18E'296/087/A=002080 !W43! id2048665B +000fpm gps2x1"));
-        Assert.assertTrue(Parser.isNotImplementedYet("ICA4B292C>OGFLR7,qAS,Letzi:/114118h4710.59N\00849.71E^091/125/A=004154 !W41! id214B292C -138fpm -0.2rot 8.0dB -6.5kHz gps2x3"));
         Assert.assertTrue(Parser.isNotImplementedYet("MOITZFELD>APWEE5,TCPIP*,qAC,GLIDERN4:@031710z5058.12N/00709.19E_336/004g007t072r000p011P011b10128h66L037.weewx-5.0.2-WXT5x0"));
         Assert.assertTrue(Parser.isNotImplementedYet("MTKEB2389>OGNMTK,qAS,Microtrak:/143325h4524.93N/00523.27E'260/043/A=002992 !W50! id0FEB2389"));
         Assert.assertTrue(Parser.isNotImplementedYet("OGNF344FD>OGAIRM,qAS,Airmate:/030905h4978.59N/00756.60Ez092/116/A=002499 !W01! id0BF344FD -132fpm +0.0rot"));
