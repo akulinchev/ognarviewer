@@ -25,8 +25,11 @@ import android.util.Log;
 import androidx.annotation.MainThread;
 
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.NoRouteToHostException;
 import java.net.Socket;
+import java.net.SocketAddress;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
@@ -89,6 +92,7 @@ public class Client {
     private static class ClientThread extends Thread {
         private static final int KEEP_ALIVE_INTERVAL = 30 * 1000;
         private static final byte[] KEEP_ALIVE = new byte[]{'#', '\n'};
+        private static final int CONNECTION_TIMEOUT = 2000;
 
         private final String mHostname;
         private final Location mLocation;
@@ -122,7 +126,9 @@ public class Client {
             Log.i(TAG, "Resolve succeeded, got " + addresses.length + " addresses");
             for (int i = 0; i < addresses.length; ++i) {
                 Log.v(TAG, "Trying " + addresses[i]);
-                try (Socket socket = new Socket(addresses[i], DEFAULT_PORT)) {
+                try (Socket socket = new Socket()) {
+                    final SocketAddress address = new InetSocketAddress(addresses[i], DEFAULT_PORT);
+                    socket.connect(address, CONNECTION_TIMEOUT);
                     socket.setTcpNoDelay(true);
                     final String command = String.format(Locale.US,
                             "user NOCALL pass -1 vers ogn-ar-viewer %s filter r/%+.3f/%+.3f/%d\n",
@@ -151,7 +157,7 @@ public class Client {
                         }
                     }
                     break; // Don't try other IP addresses.
-                } catch (NoRouteToHostException e) {
+                } catch (NoRouteToHostException | SocketTimeoutException e) {
                     Log.e(TAG, addresses[i] + " failed");
                     if (i == addresses.length - 1) {
                         Log.e(TAG, "All addresses failed. Giving up!");
