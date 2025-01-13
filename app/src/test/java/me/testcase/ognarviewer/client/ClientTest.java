@@ -29,10 +29,25 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowLog;
 
+import java.net.SocketTimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @RunWith(RobolectricTestRunner.class)
 public class ClientTest {
+    @Test
+    public void testInvalidAddress() throws InterruptedException {
+        ShadowLog.stream = System.out;
+        final HandlerThread thread = new HandlerThread("test");
+        thread.start();
+        final Client client = new Client();
+        client.setHostname("testcase.me"); // Accessible, but has no APRS server running.
+        final TimeoutMessageListener listener = new TimeoutMessageListener();
+        client.connect(new Location("test"), 100, listener, new Handler(thread.getLooper()));
+        thread.join(10 * 1000);
+        client.disconnect(true);
+        Assert.assertTrue("SocketTimeoutException expected", listener.lastException instanceof SocketTimeoutException);
+    }
+
     @Test
     public void testRealForSixtySeconds() throws InterruptedException {
         ShadowLog.stream = System.out;
@@ -44,7 +59,7 @@ public class ClientTest {
 
         final Client client = new Client();
 
-        final MessageListener listener = new MessageListener();
+        final RealMessageListener listener = new RealMessageListener();
         Assert.assertEquals(0, listener.receiverStatusMessages.get());
         Assert.assertEquals(0, listener.receiverLocationMessages.get());
         Assert.assertEquals(0, listener.aircraftLocationMessages.get());
@@ -75,7 +90,34 @@ public class ClientTest {
         Assert.assertTrue("Too few aircraft locations", listener.aircraftLocationMessages.get() > 1000);
     }
 
-    private static final class MessageListener implements Client.MessageListener {
+    private static final class TimeoutMessageListener implements Client.MessageListener {
+        public Exception lastException;
+
+        @Override
+        public void onAprsMessage(AprsMessage message) {
+            lastException = null;
+            Assert.fail("Didn't except to get any message");
+        }
+
+        @Override
+        public void onAprsClientError(Exception e) {
+            lastException = e;
+        }
+
+        @Override
+        public void onInvalidAprsMessage(String message) {
+            lastException = null;
+            Assert.fail("Didn't except to get any message");
+        }
+
+        @Override
+        public void onAprsDisconnected() {
+            lastException = null;
+            Assert.fail("Disconnected");
+        }
+    }
+
+    private static final class RealMessageListener implements Client.MessageListener {
         public final AtomicInteger receiverStatusMessages = new AtomicInteger(0);
         public final AtomicInteger receiverLocationMessages = new AtomicInteger(0);
         public final AtomicInteger aircraftLocationMessages = new AtomicInteger(0);
