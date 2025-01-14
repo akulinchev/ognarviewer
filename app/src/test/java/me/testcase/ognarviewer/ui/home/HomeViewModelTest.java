@@ -93,37 +93,10 @@ public class HomeViewModelTest {
         Assert.assertEquals(SensorManager.SENSOR_STATUS_NO_CONTACT, (int) mModel.getCompassAccuracy().getValue());
 
         // First fix is available.
+        // In the past there used to be a "Low GPS accuracy" overlay here.
         final Location location = new Location("test");
         location.setAccuracy(11);
         location.setVerticalAccuracyMeters(11);
-        mModel.onLocationChanged(location);
-        Assert.assertEquals(HomeViewModel.OVERLAY_MODE_LOW_ACCURACY, (long) mModel.getOverlayMode().getValue());
-
-        // Accuracy increased.
-        location.setAccuracy(10);
-        location.setVerticalAccuracyMeters(10);
-        mModel.onLocationChanged(location);
-        Assert.assertEquals(HomeViewModel.OVERLAY_MODE_AUTO_COMPASS_CALIBRATION, (long) mModel.getOverlayMode().getValue());
-
-        // Accuracy decreased again.
-        location.setAccuracy(11);
-        location.setVerticalAccuracyMeters(11);
-        mModel.onLocationChanged(location);
-        Assert.assertEquals(HomeViewModel.OVERLAY_MODE_LOW_ACCURACY, (long) mModel.getOverlayMode().getValue());
-
-        // Accuracy increased again.
-        location.setAccuracy(10);
-        location.setVerticalAccuracyMeters(10);
-        mModel.onLocationChanged(location);
-        Assert.assertEquals(HomeViewModel.OVERLAY_MODE_AUTO_COMPASS_CALIBRATION, (long) mModel.getOverlayMode().getValue());
-
-        // Try good a horizontal and a bad vertical accuracies.
-        // This happens on some devices and users start giving me 1-star reviews.
-        location.setAccuracy(11);
-        location.setVerticalAccuracyMeters(100);
-        mModel.onLocationChanged(location);
-        Assert.assertEquals(HomeViewModel.OVERLAY_MODE_LOW_ACCURACY, (long) mModel.getOverlayMode().getValue());
-        location.setAccuracy(10);
         mModel.onLocationChanged(location);
         Assert.assertEquals(HomeViewModel.OVERLAY_MODE_AUTO_COMPASS_CALIBRATION, (long) mModel.getOverlayMode().getValue());
 
@@ -139,15 +112,78 @@ public class HomeViewModelTest {
         Assert.assertEquals(SensorManager.SENSOR_STATUS_ACCURACY_MEDIUM, (int) mModel.getCompassAccuracy().getValue());
         Assert.assertEquals(HomeViewModel.OVERLAY_MODE_AUTO_COMPASS_CALIBRATION, (long) mModel.getOverlayMode().getValue());
 
+        // Compass accuracy has increased.
         mModel.onAccuracyChanged(mMagneticFieldSensor, SensorManager.SENSOR_STATUS_ACCURACY_HIGH);
         Assert.assertEquals(SensorManager.SENSOR_STATUS_ACCURACY_HIGH, (int) mModel.getCompassAccuracy().getValue());
         Assert.assertEquals(HomeViewModel.OVERLAY_MODE_NONE, (long) mModel.getOverlayMode().getValue());
 
+        // "Adjust" button clicked.
         mModel.startManualCalibration();
         Assert.assertEquals(HomeViewModel.OVERLAY_MODE_MANUAL_COMPASS_CALIBRATION, (long) mModel.getOverlayMode().getValue());
 
+        // Compass accuracy is bad again. But the manual calibration overlay should take precedence.
+        mModel.onAccuracyChanged(mMagneticFieldSensor, SensorManager.SENSOR_STATUS_ACCURACY_MEDIUM);
+        Assert.assertEquals(HomeViewModel.OVERLAY_MODE_MANUAL_COMPASS_CALIBRATION, (long) mModel.getOverlayMode().getValue());
+
+        // Manual calibration canceled. The overlay for auto calibration popups again.
         mModel.finishManualCalibration();
+        Assert.assertEquals(HomeViewModel.OVERLAY_MODE_AUTO_COMPASS_CALIBRATION, (long) mModel.getOverlayMode().getValue());
+
+        // The compass was auto-calibrated again.
+        mModel.onAccuracyChanged(mMagneticFieldSensor, SensorManager.SENSOR_STATUS_ACCURACY_HIGH);
         Assert.assertEquals(HomeViewModel.OVERLAY_MODE_NONE, (long) mModel.getOverlayMode().getValue());
+    }
+
+    @Test
+    public void testToolbarSubtitle() {
+        // By default, there is no subtitle.
+        Assert.assertNull(mModel.getToolbarSubtitle().getValue());
+
+        // First fix is available.
+        final Location location = new Location("test");
+        location.setAccuracy(11);
+        location.setVerticalAccuracyMeters(11);
+        mModel.onLocationChanged(location);
+        Assert.assertEquals("Low GPS accuracy: 11 m / 11 m", mModel.getToolbarSubtitle().getValue());
+
+        // Accuracy increased.
+        location.setAccuracy(10);
+        location.setVerticalAccuracyMeters(10);
+        mModel.onLocationChanged(location);
+        Assert.assertNull(mModel.getToolbarSubtitle().getValue());
+
+        // Accuracy decreased again.
+        location.setAccuracy(12);
+        location.setVerticalAccuracyMeters(12);
+        mModel.onLocationChanged(location);
+        Assert.assertEquals("Low GPS accuracy: 12 m / 12 m", mModel.getToolbarSubtitle().getValue());
+
+        // Demo mode was activated. It should override the bad GPS problem.
+        mSharedPreferences.edit().putBoolean("demo_mode", true).commit();
+        Assert.assertEquals("Demo mode active", mModel.getToolbarSubtitle().getValue());
+
+        // Demo mode was deactivated.
+        mSharedPreferences.edit().putBoolean("demo_mode", false).commit();
+        Assert.assertEquals("Low GPS accuracy: 12 m / 12 m", mModel.getToolbarSubtitle().getValue());
+
+        // Accuracy increased again.
+        location.setAccuracy(10);
+        location.setVerticalAccuracyMeters(10);
+        mModel.onLocationChanged(location);
+        Assert.assertNull(mModel.getToolbarSubtitle().getValue());
+
+        // Try good a horizontal and a bad vertical accuracies.
+        // This happens on some devices and users start giving me 1-star reviews.
+        location.setAccuracy(10);
+        location.setVerticalAccuracyMeters(100);
+        mModel.onLocationChanged(location);
+        Assert.assertEquals("Low GPS accuracy: 10 m / 100 m", mModel.getToolbarSubtitle().getValue());
+
+        // Some phones do not report the vertical accuracy at all.
+        location.setAccuracy(11);
+        location.removeVerticalAccuracy();
+        mModel.onLocationChanged(location);
+        Assert.assertEquals("Low GPS accuracy: 11 m / -1 m", mModel.getToolbarSubtitle().getValue());
     }
 
     @Test
@@ -232,7 +268,8 @@ public class HomeViewModelTest {
     @Test
     public void testLocationAccuracy() {
         // Initial state: location accuracy is unknown.
-        Assert.assertNull(mModel.getLocationAccuracy().getValue());
+        Assert.assertEquals(-1, mModel.getHorizontalLocationAccuracy(), 0.0001);
+        Assert.assertEquals(-1, mModel.getVerticalLocationAccuracy(), 0.0001);
 
         // Subscribe for location updates.
         mShadowApplication.grantPermissions(Manifest.permission.ACCESS_FINE_LOCATION);
@@ -246,9 +283,8 @@ public class HomeViewModelTest {
         location.setVerticalAccuracyMeters(10);
         mShadowLocationManager.simulateLocation(location);
         Robolectric.flushForegroundThreadScheduler();
-        Assert.assertNotNull(mModel.getLocationAccuracy().getValue());
-        Assert.assertEquals(13, mModel.getLocationAccuracy().getValue().horizontal, 0.0001);
-        Assert.assertEquals(10, mModel.getLocationAccuracy().getValue().vertical, 0.0001);
+        Assert.assertEquals(13, mModel.getHorizontalLocationAccuracy(), 0.0001);
+        Assert.assertEquals(10, mModel.getVerticalLocationAccuracy(), 0.0001);
 
         // Second fix in 2 seconds and at another position.
         location.setElapsedRealtimeNanos(location.getElapsedRealtimeNanos() + 2L * 1000 * 1000 * 1000);
@@ -258,8 +294,8 @@ public class HomeViewModelTest {
         location.setVerticalAccuracyMeters(100);
         mShadowLocationManager.simulateLocation(location);
         Robolectric.flushForegroundThreadScheduler();
-        Assert.assertEquals(130, mModel.getLocationAccuracy().getValue().horizontal, 0.0001);
-        Assert.assertEquals(100, mModel.getLocationAccuracy().getValue().vertical, 0.0001);
+        Assert.assertEquals(130, mModel.getHorizontalLocationAccuracy(), 0.0001);
+        Assert.assertEquals(100, mModel.getVerticalLocationAccuracy(), 0.0001);
 
         // Third fix in 3 seconds. This time, the accuracy is not set => should be -1.
         location.setElapsedRealtimeNanos(location.getElapsedRealtimeNanos() + 3L * 1000 * 1000 * 1000);
@@ -269,8 +305,8 @@ public class HomeViewModelTest {
         location.removeVerticalAccuracy();
         mShadowLocationManager.simulateLocation(location);
         Robolectric.flushForegroundThreadScheduler();
-        Assert.assertEquals(-1, mModel.getLocationAccuracy().getValue().horizontal, 0.0001);
-        Assert.assertEquals(-1, mModel.getLocationAccuracy().getValue().vertical, 0.0001);
+        Assert.assertEquals(-1, mModel.getHorizontalLocationAccuracy(), 0.0001);
+        Assert.assertEquals(-1, mModel.getVerticalLocationAccuracy(), 0.0001);
 
         // Unsubscribe from location updates.
         mModel.stopLocationUpdates();
@@ -284,8 +320,8 @@ public class HomeViewModelTest {
         location.setVerticalAccuracyMeters(10);
         mShadowLocationManager.simulateLocation(location);
         Robolectric.flushForegroundThreadScheduler();
-        Assert.assertEquals(-1, mModel.getLocationAccuracy().getValue().horizontal, 0.0001);
-        Assert.assertEquals(-1, mModel.getLocationAccuracy().getValue().vertical, 0.0001);
+        Assert.assertEquals(-1, mModel.getHorizontalLocationAccuracy(), 0.0001);
+        Assert.assertEquals(-1, mModel.getVerticalLocationAccuracy(), 0.0001);
     }
 
     @Test
@@ -407,15 +443,14 @@ public class HomeViewModelTest {
 
     @Test
     public void testSettings() {
-        Assert.assertNotNull(mModel.getDemoMode().getValue());
-        Assert.assertFalse(mModel.getDemoMode().getValue());
+        Assert.assertFalse(mModel.isDemoMode());
         Assert.assertFalse(mModel.getWorld().isDemo());
         mSharedPreferences.edit().putBoolean("demo_mode", true).commit();
         Assert.assertTrue(mModel.getWorld().isDemo());
-        Assert.assertTrue(mModel.getDemoMode().getValue());
+        Assert.assertTrue(mModel.isDemoMode());
         mSharedPreferences.edit().putBoolean("demo_mode", false).commit();
         Assert.assertFalse(mModel.getWorld().isDemo());
-        Assert.assertFalse(mModel.getDemoMode().getValue());
+        Assert.assertFalse(mModel.isDemoMode());
 
         Assert.assertTrue(mModel.getWorld().isLocationPredictionEnabled());
         mSharedPreferences.edit().putBoolean("linear_interpolation", false).commit();
@@ -428,11 +463,11 @@ public class HomeViewModelTest {
                 .putBoolean("linear_interpolation", false)
                 .commit();
         Assert.assertTrue(mModel.getWorld().isDemo());
-        Assert.assertTrue(mModel.getDemoMode().getValue());
+        Assert.assertTrue(mModel.isDemoMode());
         Assert.assertFalse(mModel.getWorld().isLocationPredictionEnabled());
         mSharedPreferences.edit().clear().commit();
         Assert.assertFalse(mModel.getWorld().isDemo());
-        Assert.assertFalse(mModel.getDemoMode().getValue());
+        Assert.assertFalse(mModel.isDemoMode());
         Assert.assertTrue(mModel.getWorld().isLocationPredictionEnabled());
 
         // TODO: test max_distance
