@@ -147,7 +147,7 @@ public class HomeFragment extends Fragment implements AircraftBottomSheet.OnEdit
             }
         });
 
-        mBinding.gpsWaiting.textAccuracy.setOnApplyWindowInsetsListener((v, insets) -> {
+        mBinding.gpsWaiting.textSatellites.setOnApplyWindowInsetsListener((v, insets) -> {
             v.setPadding(0, 0, 0, insets.getSystemWindowInsetBottom());
             return insets.consumeSystemWindowInsets();
         });
@@ -180,12 +180,6 @@ public class HomeFragment extends Fragment implements AircraftBottomSheet.OnEdit
                     mBinding.toolbar.getMenu().findItem(R.id.action_adjust).setVisible(true);
                     break;
                 case HomeViewModel.OVERLAY_MODE_WAITING_GPS:
-                case HomeViewModel.OVERLAY_MODE_LOW_ACCURACY:
-                    if (mode == HomeViewModel.OVERLAY_MODE_WAITING_GPS) {
-                        mBinding.gpsWaiting.textView2.setText(R.string.waiting_gps);
-                    } else {
-                        mBinding.gpsWaiting.textView2.setText(R.string.bad_accuracy);
-                    }
                     mBinding.gpsWaiting.getRoot().setVisibility(View.VISIBLE);
                     mBinding.autoCalibration.getRoot().setVisibility(View.GONE);
                     mBinding.manualCalibration.setVisibility(View.GONE);
@@ -224,15 +218,6 @@ public class HomeFragment extends Fragment implements AircraftBottomSheet.OnEdit
                     string));
         });
 
-        mViewModel.getLocationAccuracy().observe(getViewLifecycleOwner(), accuracy -> {
-            if (accuracy == null) {
-                mBinding.gpsWaiting.textAccuracy.setText(null);
-            } else {
-                mBinding.gpsWaiting.textAccuracy.setText(getString(R.string.waiting_gps_accuracy,
-                        Math.round(accuracy.horizontal), Math.round(accuracy.vertical)));
-            }
-        });
-
         mViewModel.getSatelliteCount().observe(getViewLifecycleOwner(), count -> {
             if (count == null) {
                 mBinding.gpsWaiting.textSatellites.setText(null);
@@ -261,13 +246,8 @@ public class HomeFragment extends Fragment implements AircraftBottomSheet.OnEdit
             }
         });
 
-        mViewModel.getDemoMode().observe(getViewLifecycleOwner(), active -> {
-            if (active != null && active) {
-                mBinding.toolbar.setSubtitle(R.string.demo_mode_active);
-            } else {
-                mBinding.toolbar.setSubtitle(null);
-            }
-        });
+        mViewModel.getToolbarSubtitle().observe(getViewLifecycleOwner(),
+                text -> mBinding.toolbar.setSubtitle(text));
 
         mViewModel.getSelectedTarget().observe(getViewLifecycleOwner(), target -> {
             if (target == null) {

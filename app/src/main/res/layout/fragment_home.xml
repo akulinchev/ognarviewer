@@ -39,6 +39,7 @@
       android:minHeight="?actionBarSize"
       android:theme="@style/ThemeOverlay.Material3.Dark.ActionBar"
       app:menu="@menu/fragment_home"
+      app:subtitleTextColor="#FF0000"
       tools:title="OGN AR Viewer" />
 
   </com.google.android.material.appbar.AppBarLayout>

@@ -27,7 +27,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
-    android:text="@string/waiting_gps_title"
+    android:text="@string/waiting_gps"
     android:textAlignment="center"
     android:textAppearance="?textAppearanceHeadline5"
     android:textColor="@color/black"
@@ -51,18 +51,7 @@
     android:textAlignment="center"
     android:textAppearance="?textAppearanceCaption"
     android:textColor="#666666"
-    app:layout_constraintBottom_toTopOf="@id/text_accuracy"
-    tools:text="16 satellites found, 2 used" />
-
-  <TextView
-    android:id="@+id/text_accuracy"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="16dp"
-    android:textAlignment="center"
-    android:textAppearance="?textAppearanceCaption"
-    android:textColor="#666666"
     app:layout_constraintBottom_toBottomOf="parent"
-    tools:text="Current accuracy: 50 m / 20 m" />
+    tools:text="16 satellites found, 2 used" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

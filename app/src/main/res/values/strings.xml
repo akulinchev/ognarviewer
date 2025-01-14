@@ -86,13 +86,12 @@
 
   <string name="calibration_title">Low compass accuracy</string>
   <string name="calibration_description">Rotate your device like shown above 2–3 times to calibrate the compass. Make sure it is rotated along all <b>three</b> axes.</string>
-  <string name="waiting_gps_title">Waiting for GPS</string>
   <string name="waiting_gps_description">OGN AR Viewer needs to know your exact location to show aircraft around you.</string>
   <plurals name="waiting_gps_satellites">
     <item quantity="one">%d satellite found, %d used</item>
     <item quantity="other">%d satellites found, %d used</item>
   </plurals>
-  <string name="waiting_gps_accuracy">Current accuracy: %1$d m / %2$d m</string>
+  <string name="waiting_gps_accuracy">Low GPS accuracy: %1$d m / %2$d m</string>
 
   <string name="beware_title">Warning</string>
   <string name="beware_message">Beware of physical hazards in the real world.\n\nSome aircraft may be missing or shown at a wrong position.\n\nDon\'t use for navigation purposes.</string>

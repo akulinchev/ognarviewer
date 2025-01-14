@@ -34,6 +34,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.core.location.LocationListenerCompat;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -41,6 +42,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.preference.PreferenceManager;
 
 import me.testcase.ognarviewer.CalibratedClock;
+import me.testcase.ognarviewer.R;
 import me.testcase.ognarviewer.client.AircraftLocationMessage;
 import me.testcase.ognarviewer.client.AprsMessage;
 import me.testcase.ognarviewer.client.Client;
@@ -62,12 +64,33 @@ public final class HomeViewModel extends AndroidViewModel implements SensorEvent
         SharedPreferences.OnSharedPreferenceChangeListener, Client.MessageListener {
     private static final String TAG = "HomeViewModel";
 
+    /**
+     * There is no overlay, the user sees the camera and aircraft.
+     */
     public static final int OVERLAY_MODE_NONE = 0;
-    public static final int OVERLAY_MODE_WAITING_GPS = 1;
-    public static final int OVERLAY_MODE_LOW_ACCURACY = 2;
-    public static final int OVERLAY_MODE_AUTO_COMPASS_CALIBRATION = 3;
-    public static final int OVERLAY_MODE_MANUAL_COMPASS_CALIBRATION = 4;
 
+    /**
+     * "Waiting for GPS..." overlay with some cool animation is shown.
+     * <p>
+     * "Bad GPS accuracy" is not used anymore and was replaced by the subtitle text.
+     */
+    public static final int OVERLAY_MODE_WAITING_GPS = 1;
+
+    /**
+     * "Low compass accuracy" overlay is shown suggesting to rotate the phone like an 8.
+     */
+    public static final int OVERLAY_MODE_AUTO_COMPASS_CALIBRATION = 2;
+
+    /**
+     * The user has pressed the "Adjust" button for manual compass calibration in the toolbar.
+     * <p>
+     * This overlay has the highest priority, overriding any other overlay.
+     */
+    public static final int OVERLAY_MODE_MANUAL_COMPASS_CALIBRATION = 3;
+
+    /**
+     * The minimum accuracy which is not considered as being low.
+     */
     private static final int MINIMUM_ACCURACY = 10;
 
     private final World mWorld = new World();
@@ -90,10 +113,12 @@ public final class HomeViewModel extends AndroidViewModel implements SensorEvent
     private boolean mManuallyCalibrating;
     private boolean mSkipAutoCalibration;
     private final MutableLiveData<Integer> mOverlayMode = new MutableLiveData<>();
+    private final MutableLiveData<String> mToolbarSubtitle = new MutableLiveData<>();
 
+    private double mHorizontalLocationAccuracy = -1;
+    private double mVerticalLocationAccuracy = -1;
     private final LocationManager mLocationManager;
     private final MutableLiveData<Boolean> mGpsEnabled = new MutableLiveData<>();
-    private final MutableLiveData<LocationAccuracy> mLocationAccuracy = new MutableLiveData<>();
     private final MutableLiveData<SatelliteCount> mSatelliteCount = new MutableLiveData<>();
 
     private final SensorManager mSensorManager;
@@ -101,8 +126,8 @@ public final class HomeViewModel extends AndroidViewModel implements SensorEvent
     private final MutableLiveData<Integer> mCompassAccuracy =
             new MutableLiveData<>(SensorManager.SENSOR_STATUS_NO_CONTACT);
 
+    private boolean mDemoMode;
     private final MutableLiveData<Boolean> mShowReconnectDialog = new MutableLiveData<>();
-    private final MutableLiveData<Boolean> mDemoMode = new MutableLiveData<>();
 
     private final GnssStatus.Callback mGnssStatusCallback = new GnssStatus.Callback() {
         @Override
@@ -137,6 +162,7 @@ public final class HomeViewModel extends AndroidViewModel implements SensorEvent
         mLocationManager = (LocationManager) application.getSystemService(Context.LOCATION_SERVICE);
 
         updateOverlayMode();
+        updateToolbarSubtitle();
     }
 
     @Override
@@ -152,21 +178,31 @@ public final class HomeViewModel extends AndroidViewModel implements SensorEvent
         return mOverlayMode;
     }
 
+    public LiveData<String> getToolbarSubtitle() {
+        return mToolbarSubtitle;
+    }
+
+    /**
+     * Calculates and sets {@link #mOverlayMode}.
+     * <p>
+     * This method should be called each time one of the variables that {@link #mOverlayMode}
+     * depends on ({@link #mManuallyCalibrating}, {@link #mGpsFixAvailable}, {@link #mDemoMode},
+     * {@link #mCompassOk}, {@link #mSkipAutoCalibration}) is changed.
+     */
     private void updateOverlayMode() {
         final int desiredMode;
-        final Boolean demoMode = mDemoMode.getValue();
         if (mManuallyCalibrating) {
             // Manual calibration overlay has the highest priority because it was intentionally
             // requested by the user.
             desiredMode = OVERLAY_MODE_MANUAL_COMPASS_CALIBRATION;
-        } else if (!mGpsFixAvailable && demoMode != null && !demoMode) {
+        } else if (!mGpsFixAvailable && !mDemoMode) {
             // Prefer GPS complaints over compass complaints: it is possible that the compass will
-            // be calibrated in the background while the user is waiting for a GPS fix.
+            // be calibrated in the background while the user is waiting for a GPS fix. Not used in
+            // the demo mode, because it doesn't need GPS and uses a fixed location.
             desiredMode = OVERLAY_MODE_WAITING_GPS;
-        } else if (!mGoodGpsAccuracy && demoMode != null && !demoMode) {
-            desiredMode = OVERLAY_MODE_LOW_ACCURACY;
         } else if (!mCompassOk && !mSkipAutoCalibration) {
-            // If everything else is OK, well, need to complain about the compass...
+            // If everything else is OK, well, need to complain about the compass... Needs to be
+            // shown in demo mode too, but not when the user has pressed the "Skip" button.
             desiredMode = OVERLAY_MODE_AUTO_COMPASS_CALIBRATION;
         } else {
             // If everything is OK, no overlay should be shown.
@@ -175,9 +211,32 @@ public final class HomeViewModel extends AndroidViewModel implements SensorEvent
         final Integer currentMode = mOverlayMode.getValue();
         if (currentMode == null || currentMode != desiredMode) {
             mOverlayMode.setValue(desiredMode);
+            // When an overlay appears, it hides the bottom sheet. If needed, trigger the
+            // selected target variable with the same value to show the bottom sheet again.
             if (desiredMode == OVERLAY_MODE_NONE && mSelectedTarget.getValue() != null) {
                 mSelectedTarget.setValue(mSelectedTarget.getValue());
             }
+        }
+    }
+
+    /**
+     * Calculates and sets the red subtitle text shown in the toolbar.
+     * <p>
+     * This method should be called each time one of the variables that {@link #mToolbarSubtitle}
+     * depends on ({@link #mDemoMode}, {@link #mGoodGpsAccuracy},
+     * {@link #mHorizontalLocationAccuracy} and {@link #mVerticalLocationAccuracy}) is changed.
+     */
+    private void updateToolbarSubtitle() {
+        String desiredText = null;
+        if (mDemoMode) {
+            desiredText = getApplication().getString(R.string.demo_mode_active);
+        } else if (!mGoodGpsAccuracy && mHorizontalLocationAccuracy != -1) {
+            desiredText = getApplication().getString(R.string.waiting_gps_accuracy,
+                    Math.round(mHorizontalLocationAccuracy), Math.round(mVerticalLocationAccuracy));
+        }
+        final String currentText = mToolbarSubtitle.getValue();
+        if (currentText == null || !currentText.equals(desiredText)) {
+            mToolbarSubtitle.setValue(desiredText);
         }
     }
 
@@ -232,8 +291,14 @@ public final class HomeViewModel extends AndroidViewModel implements SensorEvent
         updateOverlayMode();
     }
 
-    public LiveData<LocationAccuracy> getLocationAccuracy() {
-        return mLocationAccuracy;
+    @VisibleForTesting
+    public double getHorizontalLocationAccuracy() {
+        return mHorizontalLocationAccuracy;
+    }
+
+    @VisibleForTesting
+    public double getVerticalLocationAccuracy() {
+        return mVerticalLocationAccuracy;
     }
 
     public LiveData<SatelliteCount> getSatelliteCount() {
@@ -256,13 +321,16 @@ public final class HomeViewModel extends AndroidViewModel implements SensorEvent
             return;
         }
         mGpsFixAvailable = false;
+        mGoodGpsAccuracy = false;
         mSatelliteCount.setValue(null); // Hide the number of satellites, it isn't known yet.
-        mLocationAccuracy.setValue(null); // Hide the accuracy, it isn't known yet.
+        mHorizontalLocationAccuracy = -1;
+        mVerticalLocationAccuracy = -1;
         mLocationManager.registerGnssStatusCallback(mGnssStatusCallback);
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, this);
         mLocationManager.addNmeaListener(this, null);
         mGpsEnabled.setValue(mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER));
         updateOverlayMode();
+        updateToolbarSubtitle();
     }
 
     public void stopLocationUpdates() {
@@ -278,31 +346,23 @@ public final class HomeViewModel extends AndroidViewModel implements SensorEvent
                 location.getAccuracy()));
         mGpsFixAvailable = true;
         mWorld.setPosition(location);
+        // Prefer the GPS clock, because the device clock may be very inaccurate.
         CalibratedClock.sync(location);
-        final LocationAccuracy accuracy = new LocationAccuracy();
-        accuracy.horizontal = location.hasAccuracy() ? location.getAccuracy() : -1;
-        accuracy.vertical = location.hasVerticalAccuracy()
+        mHorizontalLocationAccuracy = location.hasAccuracy() ? location.getAccuracy() : -1;
+        mVerticalLocationAccuracy = location.hasVerticalAccuracy()
                 ? location.getVerticalAccuracyMeters() : -1;
-        mLocationAccuracy.setValue(accuracy);
-        if (location.getAccuracy() <= MINIMUM_ACCURACY) {
-            mGoodGpsAccuracy = true;
-            if (mOgnLocation == null || mOgnLocation.distanceTo(location) > 5000) {
-                mClient.disconnect();
-                mOgnLocation = LocationObfuscator.obfuscate(location);
-                Log.v(TAG, "onLocationChanged(): calling reconnect()");
-                reconnect();
-            } else {
-                Log.v(TAG, "onLocationChanged(): not calling reconnect()");
-            }
-        } else {
-            mGoodGpsAccuracy = false;
-            // FIXME: don't connect/disconnect when the accuracy jumps around MINIMUM_ACCURACY!
-            Log.v(TAG, "onLocationChanged(): calling mClient.disconnect(), because accuracy <= "
-                    + MINIMUM_ACCURACY);
+        mGoodGpsAccuracy = mHorizontalLocationAccuracy <= MINIMUM_ACCURACY
+                && mVerticalLocationAccuracy <= MINIMUM_ACCURACY;
+        if (mOgnLocation == null || mOgnLocation.distanceTo(location) > 5000) {
             mClient.disconnect();
-            mOgnLocation = null;
+            mOgnLocation = LocationObfuscator.obfuscate(location);
+            Log.v(TAG, "onLocationChanged(): calling reconnect()");
+            reconnect();
+        } else {
+            Log.v(TAG, "onLocationChanged(): not calling reconnect()");
         }
         updateOverlayMode();
+        updateToolbarSubtitle();
     }
 
     @Override
@@ -343,12 +403,13 @@ public final class HomeViewModel extends AndroidViewModel implements SensorEvent
         }
     }
 
-    public LiveData<Boolean> getDemoMode() {
+    @VisibleForTesting
+    public boolean isDemoMode() {
         return mDemoMode;
     }
 
     private void setDemoMode(boolean active) {
-        mDemoMode.setValue(active);
+        mDemoMode = active;
 
         if (active) {
             mWorld.clear();
@@ -391,6 +452,8 @@ public final class HomeViewModel extends AndroidViewModel implements SensorEvent
 
         // When the demo mode is active, GPS overlays are impossible.
         updateOverlayMode();
+        // When the demo mode is active, a warning is hown in the toolbar.
+        updateToolbarSubtitle();
     }
 
     @Override
@@ -480,11 +543,6 @@ public final class HomeViewModel extends AndroidViewModel implements SensorEvent
     @Override
     public void onAprsDisconnected() {
         Log.e(TAG, "Client disconnected");
-    }
-
-    public static final class LocationAccuracy {
-        public double horizontal;
-        public double vertical;
     }
 
     public static final class SatelliteCount {
