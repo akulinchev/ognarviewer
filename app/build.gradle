@@ -23,6 +23,14 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    // F-Droid wants we strip out the dependency list, because it is not
+    // checked as part of the signature verification and one could potentially
+    // place any non-free code there.
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
+    }
+
     signingConfigs {
         release {
             storeFile System.getenv("KEYSTORE_FILE") ? file(System.getenv("KEYSTORE_FILE")) : null
