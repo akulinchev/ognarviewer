@@ -86,6 +86,7 @@ public class Parser {
             "OGLT24",
             "OGNATO",
             "OGNAVI", // naviter
+            "OGNDVS",
             "OGNFNO",
             "OGNFNT",
             "OGNMTK", // microtrak
