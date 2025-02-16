@@ -374,6 +374,15 @@ public class Parser {
         if (message.endsWith("AVIONIX ENGINEERING ADS-B/OGN receiver")) {
             return true;
         }
+        if (message.endsWith("065")) {
+            if (message.endsWith("Belgian Aeromodelling League receiver 065")) {
+                return true;
+            }
+            if (message.endsWith("Aeromodelling airfield 065")) {
+                return true;
+            }
+            return false;
+        }
         if (message.endsWith("&Using AirGw2/LsaSi")) {
             return true; // They provide us no altitude - useless for AR anyway.
         }
