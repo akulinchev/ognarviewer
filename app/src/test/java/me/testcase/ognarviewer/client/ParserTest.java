@@ -300,6 +300,7 @@ public class ParserTest {
         Assert.assertTrue(Parser.isNotImplementedYet("OGNF344FD>OGAIRM,qAS,Airmate:/030905h4978.59N/00756.60Ez092/116/A=002499 !W01! id0BF344FD -132fpm +0.0rot"));
         Assert.assertTrue(Parser.isNotImplementedYet("PAWF95F3A>OGPAW,qAS,LILH:/142806h4509.76N\\00928.25E^168/102/A=002008 !W78! id23F95F3A 8.0dB +1.2kHz +17.6dBm"));
         Assert.assertTrue(Parser.isNotImplementedYet("XCG640470>OGNXCG,qAS,XCC640470:/142805h4924.62N/00515.14Eg174/000/A=001129 id1F640470 +000fpm gps0x0"));
+        Assert.assertTrue(Parser.isNotImplementedYet("PUR123ABD>OGPURTK,qAS,PureTrk23:/114055h4534.49N/00607.25E7000/000/A=004016 !W51! id1E123ABD +000fpm +0.0rot 0.0dB 0e +0.0kHz gps2x3"));
 
         Assert.assertFalse(Parser.isNotImplementedYet("ICA4D2511>OGADSB,qAS,HLST:/081616h4839.66N/00802.68E^/A=022764 !W80! id014D2511 FL217.50"));
         Assert.assertFalse(Parser.isNotImplementedYet("EDRC>OGNSDR,TCPIP*,qAC,GLIDERN2:/171612h4927.06NI00702.63E&/A=001168"));

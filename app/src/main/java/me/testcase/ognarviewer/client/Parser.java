@@ -95,6 +95,7 @@ public class Parser {
             "OGNTRK",
             "OGNXCG",
             "OGPAW", // pilot aware
+            "OGPURTK",
             "OGSKYL", // skylines
             "OGSPID", // spider
             "OGSPOT",
