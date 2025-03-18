@@ -90,6 +90,7 @@ public class Parser {
             "OGNFNO",
             "OGNFNT",
             "OGNMTK", // microtrak
+            "OGNPUR",
             "OGNSKY", // safesky
             "OGNSXR", // Stratux (https://stratux.me)
             "OGNTRK",
