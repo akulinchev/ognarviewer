@@ -101,6 +101,7 @@ public class Parser {
             "OGSPID", // spider
             "OGSPOT",
             "SimpleVFR", // EasyVFR (https://easyvfr4.aero)
+            "SPOT", // same as OGSPOT above?
     };
 
     private final BufferedReader mReader;
