@@ -51,7 +51,8 @@ public class ParserTest {
                 + "FLRDDD494>OGFLR,qAS,LFGA:/175400h4806.73N/00721.79E'161/000/A=000699 !W05! id06DDD494 -296fpm +0.0rot 42.2dB -9.1kHz gps8x15 +3.5dBm\n"
                 + "FLRDDC287>OGFLR,qAS,EDKV:/175400h5022.73N/00636.71E'198/075/A=003888 !W20! id0ADDC287 +099fpm +0.0rot 4.0dB 2e -1.0kHz gps2x4 s7.22 h1E\n"
                 + "FLR3e5cbc>APRS,qAS,NAVITER2:/142955h5138.38N/00720.06E'000/000/A=000180 !W05! id063e5cbc +000fpm +0.0rot\n"
-                + "ICA4B292C>OGFLR7,qAS,Letzi:/114118h4710.59N\\00849.71E^091/125/A=004154 !W41! id214B292C -138fpm -0.2rot 8.0dB -6.5kHz gps2x3");
+                + "ICA4B292C>OGFLR7,qAS,Letzi:/114118h4710.59N\\00849.71E^091/125/A=004154 !W41! id214B292C -138fpm -0.2rot 8.0dB -6.5kHz gps2x3\n"
+                + "ICA4D2287>OGADSB,qAS,SpainAVX:/114311h5035.09N\\00407.31E^259/336/A=012400 id254D2287 +2880fpm  0rot !W44! fnA3:RYR58BV  FL115 reg9H-QDO modelB738");
 
         testAircraftLocation(parser.parse(), "ICA896179", 49.69662, 10.34825, 110, 982, 10963, 0, Double.NaN);
         testAircraftLocation(parser.parse(), "ICA4D2511", 48.66113, 8.04467, 0, 0, 6938, Double.NaN, Double.NaN);
@@ -66,6 +67,7 @@ public class ParserTest {
         testAircraftLocation(parser.parse(), "FLRDDC287", 50.37887, 6.61183, 198, 139, 1185, 0.5, 0.0);
         testAircraftLocation(parser.parse(), "FLR3e5cbc", 51.63967, 7.33442, 0, 0, 55, 0.0, 0.0);
         testAircraftLocation(parser.parse(), "ICA4B292C", 47.17657, 8.82852, 91, 232, 1266, -0.7, -0.6);
+        testAircraftLocation(parser.parse(), "ICA4D2287", 50.5849, 4.1219, 259, 622, 3780, 14.63333, 0);
     }
 
     private void testAircraftLocation(AprsMessage message, String callSign, double lat, double lon, int heading, int speed, int alt, double climbRate, double turnRate) {
@@ -227,23 +229,16 @@ public class ParserTest {
 
     @Test
     public void testAltitude() {
-        Assert.assertEquals(0, Parser.parseAltitude("000000", null));
-        Assert.assertEquals(0, Parser.parseAltitude("000001", null));
-        Assert.assertEquals(1, Parser.parseAltitude("000003", null));
-        Assert.assertEquals(10, Parser.parseAltitude("000032", null));
-        Assert.assertEquals(10, Parser.parseAltitude("+32", null));
+        Assert.assertEquals(0, Parser.parseAltitude("000000"));
+        Assert.assertEquals(0, Parser.parseAltitude("000001"));
+        Assert.assertEquals(1, Parser.parseAltitude("000003"));
+        Assert.assertEquals(10, Parser.parseAltitude("000032"));
+        Assert.assertEquals(10, Parser.parseAltitude("+32"));
 
-        // GPS altitude, if given, should take precedence over the flight level.
-        Assert.assertEquals(10, Parser.parseAltitude("000032", "350.00"));
-
-        // If no GPS altitude is given, use the flight level.
-        Assert.assertEquals(10000, Parser.parseAltitude(null, "328.08"));
-
-        // If neither GPS altitude nor the flight level are available, give up.
-        Assert.assertEquals(Integer.MIN_VALUE, Parser.parseAltitude(null, null));
+        Assert.assertEquals(Integer.MIN_VALUE, Parser.parseAltitude(null));
 
         // E.g. "//OGNFD6CD6>APRS,qAS,NAVITER2:/122825h5156.59N/00457.26E'000/000/A=-00003 !W57! id1EFD6CD6 +000fpm +0.0rot"
-        Assert.assertEquals(-1, Parser.parseAltitude("-00003", null));
+        Assert.assertEquals(-1, Parser.parseAltitude("-00003"));
     }
 
     @Test
@@ -270,6 +265,12 @@ public class ParserTest {
         Assert.assertEquals(-12.6, Parser.parseTurnRate("-4.2"), 0.0001);
         Assert.assertEquals(+30.3, Parser.parseTurnRate("+10.1"), 0.0001);
         Assert.assertEquals(-30.3, Parser.parseTurnRate("-10.1"), 0.0001);
+    }
+
+    @Test
+    public void testFlightLevel() {
+        Assert.assertEquals(10000, Parser.parseFlightLevel("328.08"));
+        Assert.assertEquals(Integer.MIN_VALUE, Parser.parseFlightLevel(null));
     }
 
     @Test
