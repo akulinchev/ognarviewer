@@ -35,16 +35,19 @@ public class Parser {
 
     private static final Pattern AIRCRAFT_LOCATION_RE = Pattern.compile(
             "^(?<callSign>\\w++)>(?:APRS|OGFLR[67]?+|OGADSB),[^:]++:/"
-                    + "(?<time>\\d{6})h" // FIXME may be ______
+                    + "(?<time>\\d{6})h"
                     + "(?<latDeg>\\d{2})(?<latMin>\\d{2}\\.\\d{2})(?<latNS>[NS])."
                     + "(?<lonDeg>\\d{3})(?<lonMin>\\d{2}\\.\\d{2})(?<lonEW>[EW])."
                     + "(?:(?<heading>\\d{3})/(?<speed>\\d{3}))?+"
                     + "(?:/A=(?<alt>[+-]?+\\d++))?+ "
-                    + "!W(?<latExtra>\\d)(?<lonExtra>\\d)! "
-                    + "id(?<id>[\\dA-Fa-f]{8})\\s?+"
-                    + "(?:(?<fpm>[+-]\\d+)fpm\\s?+)?"
-                    + "(?:(?<rot>[+-]\\d+\\.\\d+)rot\\s?+)?"
-                    + "(?:FL(?<fl>\\d++\\.\\d++))?+");
+                    + "(?<extras>.++)$");
+
+    private static final Pattern RE_SPACE = Pattern.compile("\\s++");
+    private static final Pattern RE_ID = Pattern.compile("^id([\\dA-Fa-f]{8})$");
+    private static final Pattern RE_CLIMB_RATE = Pattern.compile("^([+-]\\d++)fpm$");
+    private static final Pattern RE_TURN_RATE = Pattern.compile("^([+-]?+\\d++(?:\\.\\d++)?+)rot$");
+    private static final Pattern RE_FLIGHT_LEVEL = Pattern.compile("^FL(\\d++\\.\\d++)$");
+    private static final Pattern RE_FINE_LOCATION = Pattern.compile("^!W(?<lat>\\d)(?<lon>\\d)!$");
 
     private static final Pattern RECEIVER_LOCATION_OLD_RE = Pattern.compile(
             "^(?<callSign>[\\w-]++)>APRS,[^:]++:/"
@@ -142,8 +145,8 @@ public class Parser {
             if (mCurrentLine.startsWith("#")) {
                 continue;
             }
-            final Matcher m = AIRCRAFT_LOCATION_RE.matcher(mCurrentLine);
-            if (m.lookingAt()) {
+            Matcher m;
+            if ((m = AIRCRAFT_LOCATION_RE.matcher(mCurrentLine)).matches()) {
                 final AircraftLocationMessage message = parseAircraftLocation(m);
                 if (mNoAltitude) {
                     // If parsing failed due to the missing altitude, just skip this message.
@@ -153,19 +156,13 @@ public class Parser {
                 }
                 return message;
             }
-            m.usePattern(RECEIVER_STATUS_RE);
-            m.reset();
-            if (m.lookingAt()) {
+            if ((m = RECEIVER_STATUS_RE.matcher(mCurrentLine)).lookingAt()) {
                 return parseReceiverStatus(m);
             }
-            m.usePattern(RECEIVER_LOCATION_NEW_RE);
-            m.reset();
-            if (m.lookingAt()) {
+            if ((m = RECEIVER_LOCATION_NEW_RE.matcher(mCurrentLine)).lookingAt()) {
                 return parseReceiverLocation(m);
             }
-            m.usePattern(RECEIVER_LOCATION_OLD_RE);
-            m.reset();
-            if (m.matches()) {
+            if ((m = RECEIVER_LOCATION_OLD_RE.matcher(mCurrentLine)).lookingAt()) {
                 return parseReceiverLocation(m);
             }
             if (isNotImplementedYet(mCurrentLine)) {
@@ -182,24 +179,36 @@ public class Parser {
         if (message.timestamp == 0) {
             return null;
         }
-        message.latitude = parseLatitude(m.group("latDeg"), m.group("latMin"),
-                m.group("latExtra"), m.group("latNS"));
-        message.longitude = parseLongitude(m.group("lonDeg"), m.group("lonMin"),
-                m.group("lonExtra"), m.group("lonEW"));
+        message.altitude = parseAltitude(m.group("alt"));
+        message.heading = parseHeading(m.group("heading"));
+        message.groundSpeed = parseGroundSpeed(m.group("speed"));
+        for (final String extra : RE_SPACE.split(m.group("extras"))) {
+            Matcher m2;
+            if ((m2 = RE_FINE_LOCATION.matcher(extra)).matches()) {
+                message.latitude = parseLatitude(m.group("latDeg"), m.group("latMin"), m2.group(
+                        "lat"), m.group("latNS"));
+                message.longitude = parseLongitude(m.group("lonDeg"), m.group("lonMin"),
+                        m2.group("lon"), m.group("lonEW"));
+            } else if ((m2 = RE_ID.matcher(extra)).matches()) {
+                message.id = parseId(m2.group(1));
+            } else if ((m2 = RE_CLIMB_RATE.matcher(extra)).matches()) {
+                message.climbRate = parseClimbRate(m2.group(1));
+            } else if ((m2 = RE_TURN_RATE.matcher(extra)).matches()) {
+                message.turnRate = parseTurnRate(m2.group(1));
+            } else if ((m2 = RE_FLIGHT_LEVEL.matcher(extra)).matches()) {
+                if (message.altitude == Integer.MIN_VALUE) {
+                    message.altitude = parseFlightLevel(m2.group(1));
+                }
+            }
+        }
         if (Double.isNaN(message.latitude) || Double.isNaN(message.longitude)) {
             return null;
         }
-        message.altitude = parseAltitude(m.group("alt"), m.group("fl"));
-        message.heading = parseHeading(m.group("heading"));
-        message.groundSpeed = parseGroundSpeed(m.group("speed"));
-        message.id = parseId(m.group("id"));
-        if (message.id == 0) {
-            return null;
-        }
-        message.climbRate = parseClimbRate(m.group("fpm"));
-        message.turnRate = parseTurnRate(m.group("rot"));
         if (message.altitude == Integer.MIN_VALUE) {
             mNoAltitude = true;
+            return null;
+        }
+        if (message.id == 0) {
             return null;
         }
         return message;
@@ -231,7 +240,7 @@ public class Parser {
         if (Double.isNaN(message.latitude) || Double.isNaN(message.longitude)) {
             return null;
         }
-        message.altitude = parseAltitude(m.group("alt"), null);
+        message.altitude = parseAltitude(m.group("alt"));
         if (message.altitude == Integer.MIN_VALUE) {
             return null;
         }
@@ -325,17 +334,11 @@ public class Parser {
     }
 
     @VisibleForTesting
-    static int parseAltitude(String string, String flightLevel) {
-        if (string == null && flightLevel == null) {
+    static int parseAltitude(String string) {
+        if (string == null) {
             return Integer.MIN_VALUE;
         }
-        int altitude;
-        if (string != null) {
-            altitude = Integer.parseInt(string);
-        } else {
-            altitude = (int) Math.round(Double.parseDouble(flightLevel) * 100);
-        }
-        altitude = UnitsConverter.feetToMetres(altitude);
+        final int altitude = UnitsConverter.feetToMetres(Integer.parseInt(string));
         if (altitude < -100 || altitude > 100000) {
             return Integer.MIN_VALUE;
         }
@@ -364,6 +367,19 @@ public class Parser {
             return Double.NaN;
         }
         return Double.parseDouble(string) * 3;
+    }
+
+    @VisibleForTesting
+    static int parseFlightLevel(String string) {
+        if (string == null) {
+            return Integer.MIN_VALUE;
+        }
+        final int altitude =
+                UnitsConverter.feetToMetres((int) Math.round(Double.parseDouble(string) * 100));
+        if (altitude < -100 || altitude > 100000) {
+            return Integer.MIN_VALUE;
+        }
+        return altitude;
     }
 
     @VisibleForTesting

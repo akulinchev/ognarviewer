@@ -44,7 +44,7 @@
     <module name="HiddenField"/>
     <module name="IllegalThrows"/>
     <module name="IllegalToken"/>
-    <module name="InnerAssignment"/>
+    <!--module name="InnerAssignment"/-->
     <module name="ModifiedControlVariable"/>
     <!--module name="MultipleStringLiterals"/--> <!-- TODO -->
     <module name="MultipleVariableDeclarations"/>

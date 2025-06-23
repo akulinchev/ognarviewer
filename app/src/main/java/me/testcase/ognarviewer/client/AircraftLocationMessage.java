@@ -21,12 +21,12 @@ public class AircraftLocationMessage extends AprsMessage {
     /**
      * Latitude in degrees.
      */
-    public double latitude;
+    public double latitude = Double.NaN;
 
     /**
      * Longitude in degrees.
      */
-    public double longitude;
+    public double longitude = Double.NaN;
 
     /**
      * Altitude in meters.
@@ -53,7 +53,7 @@ public class AircraftLocationMessage extends AprsMessage {
      *
      * <p>May be NaN if missing in the message.</p>
      */
-    public double climbRate;
+    public double climbRate = Double.NaN;
 
     /**
      * Turn rate in deg/s.
@@ -62,5 +62,5 @@ public class AircraftLocationMessage extends AprsMessage {
      *
      * <p>May be NaN if missing in the message.</p>
      */
-    public double turnRate;
+    public double turnRate = Double.NaN;
 }
