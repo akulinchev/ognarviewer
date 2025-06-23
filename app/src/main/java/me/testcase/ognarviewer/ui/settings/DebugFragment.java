@@ -265,6 +265,12 @@ public class DebugFragment extends PreferenceFragmentCompat {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        final View container = view.findViewById(android.R.id.list_container);
+        container.setOnApplyWindowInsetsListener((v, insets) -> {
+            v.setPadding(0, 0, 0, insets.getSystemWindowInsetBottom());
+            return insets.consumeSystemWindowInsets();
+        });
+
         final Activity activity = getActivity();
         if (activity instanceof MainActivity) {
             final NavController navController = Navigation.findNavController(view);
