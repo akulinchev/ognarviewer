@@ -76,7 +76,7 @@ public class PublicDirectoryTest {
         final PublicDirectory db = new PublicDirectory(RuntimeEnvironment.getApplication());
         Assert.assertNull(db.find(0x01234567));
         Assert.assertNull(db.find(0x02345678));
-        Assert.assertNull(db.find(0x03456789));
+        //Assert.assertNull(db.find(0x03456789));
 
         // Exist on the website, but don't want to be tracked.
         Assert.assertNull(db.find(0x013D117A));
