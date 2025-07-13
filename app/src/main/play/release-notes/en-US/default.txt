@@ -1,0 +1,3 @@
+- Update OGN DDB
+- Improve OGN message parser
+- Target Android 15
