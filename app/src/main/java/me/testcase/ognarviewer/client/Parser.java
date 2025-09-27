@@ -405,6 +405,9 @@ public class Parser {
         if (message.endsWith("&Using AirGw2/LsaSi")) {
             return true; // They provide us no altitude - useless for AR anyway.
         }
+        if (message.contains(",qAS,OGNFNT:")) {
+            return true;
+        }
         final int index = message.indexOf('>');
         if (index == -1) {
             return false;

@@ -293,6 +293,7 @@ public class ParserTest {
         Assert.assertTrue(Parser.isNotImplementedYet("FMTFE1D8C>OGFLYM,qAS,FLYMASTER:/142351h4535.51N/00645.14Eg000/000/A=002477 !W52! id1CFE1D8C -011fpm +0.0rot"));
         Assert.assertTrue(Parser.isNotImplementedYet("FNO000549>OGNFNO,qAS,Neurone:/074022h4434.39N/00601.86E'036/058/A=005095 !W66! id20000549 +216fpm +0.0rot"));
         Assert.assertTrue(Parser.isNotImplementedYet("FNT3FF039>OGNFNT,qAS,EDVI:/142659h5148.44N\\00922.82E^000/000/A=000988 !W20! id233FF039 +20fpm +0.0rot FNT15 sF1 cr1 -6.4kHz 7e"));
+        Assert.assertTrue(Parser.isNotImplementedYet("FNTBDC3B1>Prutting1,qAS,OGNFNT:>114338h Name=\"Hochries Nordstart (1520m)\" -5.5dB"));
         Assert.assertTrue(Parser.isNotImplementedYet("FXC085DD4>FXCAPP,qAS,FLYXC:/141254h4647.35N/00537.85Eg075/025/A=004839 !W51! id1E085DD4"));
         Assert.assertTrue(Parser.isNotImplementedYet("ICA3EE4D2>SPOT,qAS,SPOT:/114120h4439.29N/00604.65E'000/000/A=016118 !W00! id3D3EE4D2 +000fpm +0.0rot 0.0dB 0e +0.0kHz gps2x3"));
         Assert.assertTrue(Parser.isNotImplementedYet("ICA3FFA1F>OGNTRK,qAS,BRTWRSTLU:/142348h4934.05N\\00811.61E^133/081/A=002244 !W03! id213FFA1F -336fpm -0.1rot FL022.47 13.5dB -2.7kHz gps2x3"));
