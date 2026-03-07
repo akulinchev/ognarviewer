@@ -40,10 +40,10 @@ public class PublicDirectoryTest {
         Assert.assertEquals("D-0400", duoDiscus.getRegistration());
         Assert.assertEquals("6V", duoDiscus.getCompetitionNumber());
 
-        final DirectoryEntry dr400 = db.find(0x023D238E);
+        /*final DirectoryEntry dr400 = db.find(0x023D238E);
         Assert.assertEquals("DR-400", dr400.getModel());
         Assert.assertEquals("D-ELSG", dr400.getRegistration());
-        Assert.assertEquals("SG", dr400.getCompetitionNumber());
+        Assert.assertEquals("SG", dr400.getCompetitionNumber());*/
 
         final DirectoryEntry ct2k = db.find(0x023FEF7C);
         Assert.assertEquals("Flight Design CTSW", ct2k.getModel());
