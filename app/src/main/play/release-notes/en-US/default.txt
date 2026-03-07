@@ -1,3 +1,1 @@
-- Update OGN DDB
-- Improve OGN message parser
-- Target Android 15
+- Sync OGN DDB to Sat, 07 Mar 2026 08:50:20 GMT
