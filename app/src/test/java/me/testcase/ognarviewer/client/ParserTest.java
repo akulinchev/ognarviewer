@@ -300,6 +300,7 @@ public class ParserTest {
         Assert.assertTrue(Parser.isNotImplementedYet("ICA48665B>OGNSKY,qAS,SafeSky:/142355h5157.54N/00558.18E'296/087/A=002080 !W43! id2048665B +000fpm gps2x1"));
         Assert.assertTrue(Parser.isNotImplementedYet("MOITZFELD>APWEE5,TCPIP*,qAC,GLIDERN4:@031710z5058.12N/00709.19E_336/004g007t072r000p011P011b10128h66L037.weewx-5.0.2-WXT5x0"));
         Assert.assertTrue(Parser.isNotImplementedYet("MTKEB2389>OGNMTK,qAS,Microtrak:/143325h4524.93N/00523.27E'260/043/A=002992 !W50! id0FEB2389"));
+        Assert.assertTrue(Parser.isNotImplementedYet("MYC640436>OGNMYC,TCPIP*,qAC,GLIDERN2:/154316h4648.58N/00828.00E'000/000/A=007263 id1B640436"));
         Assert.assertTrue(Parser.isNotImplementedYet("OGNF344FD>OGAIRM,qAS,Airmate:/030905h4978.59N/00756.60Ez092/116/A=002499 !W01! id0BF344FD -132fpm +0.0rot"));
         Assert.assertTrue(Parser.isNotImplementedYet("PAWF95F3A>OGPAW,qAS,LILH:/142806h4509.76N\\00928.25E^168/102/A=002008 !W78! id23F95F3A 8.0dB +1.2kHz +17.6dBm"));
         Assert.assertTrue(Parser.isNotImplementedYet("PUR123ABD>OGNPUR,qAS,PureTrk23:/114103h4550.99N/00618.75Eg000/000/A=003927 !W77! id1E123ABD +000fpm +0.0rot 0.0dB 0e +0.0kHz gps2x3"));
