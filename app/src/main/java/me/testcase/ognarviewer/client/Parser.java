@@ -409,7 +409,8 @@ public class Parser {
         if (message.contains(",qAS,OGNFNT:")) {
             return true;
         }
-        if (message.contains(" Pilot=")) {
+        if (message.contains(" Pilot=") || message.contains(" Reg=")) {
+            // TODO: this is a useful feature supported by new the FLARM versions.
             return true;
         }
         final int index = message.indexOf('>');
