@@ -281,6 +281,7 @@ public class ParserTest {
         Assert.assertTrue(Parser.isNotImplementedYet("DO6GZ>APRS,TCPIP*,qAC,GLIDERN3:!5158.92N/00950.63E&Using AirGw2/LsaSi"));
         Assert.assertTrue(Parser.isNotImplementedYet("BAL065>APRS,TCPIP*,qAC,GLIDERN1:/114055h5029.61NI00531.41E&/A=000492 Belgian Aeromodelling League receiver 065"));
         Assert.assertTrue(Parser.isNotImplementedYet("BAL065>APRS,TCPIP*,qAC,GLIDERN1:/203202h5029.61NI00531.41E&/A=000492 Aeromodelling airfield 065"));
+        Assert.assertTrue(Parser.isNotImplementedYet("FLRDDAAFC>OGFLR7,qAS,EDFWAVX:>123206h Pilot=FSC Wuerzburg"));
 
         Assert.assertTrue(Parser.isNotImplementedYet("97076TGO>OGNSXR,TCPIP*,qAC,GLIDERN1:/143112h4948.83NI00959.01E&/A=000787"));
         Assert.assertTrue(Parser.isNotImplementedYet("97076TGO>OGNSXR,TCPIP*,qAC,GLIDERN1:>143112h vMB145-ESP32-SX1276-OGNbase 0/min 0/0Acfts[1h]"));

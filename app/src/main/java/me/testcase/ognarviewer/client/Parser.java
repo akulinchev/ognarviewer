@@ -409,6 +409,9 @@ public class Parser {
         if (message.contains(",qAS,OGNFNT:")) {
             return true;
         }
+        if (message.contains(" Pilot=")) {
+            return true;
+        }
         final int index = message.indexOf('>');
         if (index == -1) {
             return false;
